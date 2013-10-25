@@ -2,6 +2,7 @@ import os
 os.environ['ETS_TOOLKIT'] = 'qt4'
 
 from pyface.qt import QtGui, QtCore
+# from PySide import QtGui, QtCore
 
 from traits.api import HasTraits, Instance, on_trait_change, \
     Int, Dict
@@ -33,11 +34,12 @@ class Visualization(HasTraits):
 ################################################################################
 # The QWidget containing the visualization, this is pure PyQt4 code.
 class MayaviSceneWidget(QtGui.QWidget):
-	def __init__(self, parent=None):
+    
+    def __init__(self, parent=None):
         QtGui.QWidget.__init__(self, parent)
         layout = QtGui.QVBoxLayout(self)
-        layout.setMargin(0)
-        layout.setSpacing(0)
+        # layout.setMargin(0)
+        # layout.setSpacing(0)
         self.visualization = Visualization()
 
         # If you want to debug, beware that you need to remove the Qt
@@ -47,8 +49,10 @@ class MayaviSceneWidget(QtGui.QWidget):
         #QtCore.pyqtRestoreInputHook()
 
         # The edit_traits call will generate the widget to embed.
+        # self.ui = self.visualization.edit_traits(parent=self,
+        #                                          kind='subpanel').control
         self.ui = self.visualization.edit_traits(parent=self,
-                                                 kind='subpanel').control
+                                                 kind='modal').control
         layout.addWidget(self.ui)
         self.ui.setParent(self)
 

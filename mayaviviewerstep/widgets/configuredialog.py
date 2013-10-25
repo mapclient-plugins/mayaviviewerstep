@@ -21,8 +21,8 @@ import os
 
 from PySide.QtGui import QDialog, QFileDialog, QDialogButtonBox
 
-from fieldviviewfieldworkmodelstep.widgets.ui_configuredialog import Ui_ConfigureDialog
-from fieldviviewfieldworkmodelstep.fieldvifieldworkdata import StepState
+from mayaviviewerstep.widgets.ui_configuredialog import Ui_ConfigureDialog
+from mayaviviewerstep.mayaviviewerdata import StepState
 
 REQUIRED_STYLE_SHEET = 'border: 1px solid red; border-radius: 3px'
 DEFAULT_STYLE_SHEET = ''

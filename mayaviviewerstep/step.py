@@ -18,6 +18,7 @@ This file is part of MAP Client. (http://launchpad.net/mapclient)
     along with MAP Client.  If not, see <http://www.gnu.org/licenses/>..
 '''
 import os
+os.environ['ETS_TOOLKIT'] = 'qt4'
 import random
 import string
 from PySide import QtCore, QtGui
@@ -26,7 +27,8 @@ from mountpoints.workflowstep import WorkflowStepMountPoint
 
 import numpy as np
 from mayaviviewerstep.mayaviviewerdata import StepState
-from mayaviviewerstep.widgets.mayaviviewerwidget import MayaviViewerWidget
+from mayaviviewerstep.widgets.configuredialog import ConfigureDialog
+from mayaviviewerstep.widgets.mayaviviewerwidget import MayaviViewerWidget, MayaviViewerObjectsContainer, MayaviViewerFieldworkModel
 
 class MayaviViewerStep(WorkflowStepMountPoint):
     '''
@@ -43,17 +45,24 @@ class MayaviViewerStep(WorkflowStepMountPoint):
         self.addPort(('http://physiomeproject.org/workflow/1.0/rdf-schema#port', 'http://physiomeproject.org/workflow/1.0/rdf-schema#uses', 'ju#fieldworkmodeldict'))
         # self.addPort(('http://physiomeproject.org/workflow/1.0/rdf-schema#port', 'http://physiomeproject.org/workflow/1.0/rdf-schema#provides', 'ju#fieldviviewer'))
         self._widget = None
-        self._configured = True
-        self._identifier = generateIdentifier()
+        self._configured = False
 
     def configure(self):
-        return self._configured
+        d = ConfigureDialog(self._state)
+        d.setModal(True)
+        if d.exec_():
+            self._state = d.getState()
+            self.serialize(self._location)
+            
+        self._configured = d.validate()
+        if self._configured and self._configuredObserver:
+            self._configuredObserver()
     
     def getIdentifier(self):
-        return self._identifier
+        return self._state._identifier
      
     def setIdentifier(self, identifier):
-        self._identifier = identifier
+        self._state._identifier = identifier
      
     def serialize(self, location):
         configuration_file = os.path.join(location, getConfigFilename(self._state._identifier))
@@ -82,9 +91,21 @@ class MayaviViewerStep(WorkflowStepMountPoint):
         pass
  
     def execute(self, dataIn):
-        print 'launching MayaviViewerStep' 
+        print 'launching MayaviViewerStep'
+
+        MayaviViewerWidget, MayaviViewerObjectsContainer, MayaviViewerFieldworkModel
+
+        # package models the for viewer
+        objectContainer = MayaviViewerObjectsContainer()
+        for name, model in dataIn.items():
+            # only GFs
+            renderArgs = eval(self._state._renderArgs)
+            obj = MayaviViewerFieldworkModel(name, model, [8,8], evaluator=None, renderArgs=renderArgs, fields=None, fieldName=None, PC=None)
+            objectContainer.addObject(name, obj)
+
         if not self._widget:
-            self._widget = MayaviViewerWidget(dataIn)
+            # self._widget = MayaviViewerWidget(objectContainer, parent=self)
+            self._widget = MayaviViewerWidget(objectContainer)
             self._widget._ui.closeButton.clicked.connect(self._doneExecution)
             self._widget.setModal(True)
 

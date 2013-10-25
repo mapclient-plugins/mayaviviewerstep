@@ -2,25 +2,28 @@
 
 # Form implementation generated from reading ui file 'mayaviviewerwidget.ui'
 #
-# Created: Thu Oct 24 15:46:23 2013
+# Created: Fri Oct 25 16:47:54 2013
 #      by: pyside-uic 0.2.13 running on PySide 1.1.0
 #
 # WARNING! All changes made in this file will be lost!
 
 from PySide import QtCore, QtGui
 
-class Ui_MayaviViewerWidget(object):
-    def setupUi(self, MayaviViewerWidget):
-        MayaviViewerWidget.setObjectName("MayaviViewerWidget")
-        MayaviViewerWidget.resize(914, 548)
-        self.horizontalLayout_2 = QtGui.QHBoxLayout(MayaviViewerWidget)
+class Ui_Dialog(object):
+    def setupUi(self, Dialog):
+        Dialog.setObjectName("Dialog")
+        Dialog.resize(914, 548)
+        self.horizontalLayout_2 = QtGui.QHBoxLayout(Dialog)
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
-        self.horizontalLayout = QtGui.QHBoxLayout()
-        self.horizontalLayout.setObjectName("horizontalLayout")
+        self.groupBox = QtGui.QGroupBox(Dialog)
+        self.groupBox.setTitle("")
+        self.groupBox.setObjectName("groupBox")
+        self.gridLayout = QtGui.QGridLayout(self.groupBox)
+        self.gridLayout.setObjectName("gridLayout")
         self.verticalLayout = QtGui.QVBoxLayout()
         self.verticalLayout.setSizeConstraint(QtGui.QLayout.SetDefaultConstraint)
         self.verticalLayout.setObjectName("verticalLayout")
-        self.tableWidget = QtGui.QTableWidget(MayaviViewerWidget)
+        self.tableWidget = QtGui.QTableWidget(self.groupBox)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -36,7 +39,7 @@ class Ui_MayaviViewerWidget(object):
         item = QtGui.QTableWidgetItem()
         self.tableWidget.setHorizontalHeaderItem(2, item)
         self.verticalLayout.addWidget(self.tableWidget)
-        self.closeButton = QtGui.QPushButton(MayaviViewerWidget)
+        self.closeButton = QtGui.QPushButton(self.groupBox)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -45,25 +48,25 @@ class Ui_MayaviViewerWidget(object):
         self.closeButton.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.closeButton.setObjectName("closeButton")
         self.verticalLayout.addWidget(self.closeButton)
-        self.horizontalLayout.addLayout(self.verticalLayout)
-        self.MayaviScene = MayaviSceneWidget(MayaviViewerWidget)
+        self.gridLayout.addLayout(self.verticalLayout, 0, 0, 1, 1)
+        self.MayaviScene = MayaviSceneWidget(self.groupBox)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.MayaviScene.sizePolicy().hasHeightForWidth())
         self.MayaviScene.setSizePolicy(sizePolicy)
         self.MayaviScene.setObjectName("MayaviScene")
-        self.horizontalLayout.addWidget(self.MayaviScene)
-        self.horizontalLayout_2.addLayout(self.horizontalLayout)
+        self.gridLayout.addWidget(self.MayaviScene, 0, 1, 1, 1)
+        self.horizontalLayout_2.addWidget(self.groupBox)
 
-        self.retranslateUi(MayaviViewerWidget)
-        QtCore.QMetaObject.connectSlotsByName(MayaviViewerWidget)
+        self.retranslateUi(Dialog)
+        QtCore.QMetaObject.connectSlotsByName(Dialog)
 
-    def retranslateUi(self, MayaviViewerWidget):
-        MayaviViewerWidget.setWindowTitle(QtGui.QApplication.translate("MayaviViewerWidget", "Model Viewer", None, QtGui.QApplication.UnicodeUTF8))
-        self.tableWidget.horizontalHeaderItem(0).setText(QtGui.QApplication.translate("MayaviViewerWidget", "Visible", None, QtGui.QApplication.UnicodeUTF8))
-        self.tableWidget.horizontalHeaderItem(1).setText(QtGui.QApplication.translate("MayaviViewerWidget", "Object", None, QtGui.QApplication.UnicodeUTF8))
-        self.tableWidget.horizontalHeaderItem(2).setText(QtGui.QApplication.translate("MayaviViewerWidget", "Type", None, QtGui.QApplication.UnicodeUTF8))
-        self.closeButton.setText(QtGui.QApplication.translate("MayaviViewerWidget", "Close", None, QtGui.QApplication.UnicodeUTF8))
+    def retranslateUi(self, Dialog):
+        Dialog.setWindowTitle(QtGui.QApplication.translate("Dialog", "Model Viewer", None, QtGui.QApplication.UnicodeUTF8))
+        self.tableWidget.horizontalHeaderItem(0).setText(QtGui.QApplication.translate("Dialog", "Visible", None, QtGui.QApplication.UnicodeUTF8))
+        self.tableWidget.horizontalHeaderItem(1).setText(QtGui.QApplication.translate("Dialog", "Object", None, QtGui.QApplication.UnicodeUTF8))
+        self.tableWidget.horizontalHeaderItem(2).setText(QtGui.QApplication.translate("Dialog", "Type", None, QtGui.QApplication.UnicodeUTF8))
+        self.closeButton.setText(QtGui.QApplication.translate("Dialog", "Close", None, QtGui.QApplication.UnicodeUTF8))
 
 from mayaviscenewidget import MayaviSceneWidget
