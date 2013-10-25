@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'mayaviviewerwidget.ui'
 #
-# Created: Fri Oct 25 16:47:54 2013
-#      by: pyside-uic 0.2.13 running on PySide 1.1.0
+# Created: Sat Oct 26 10:03:26 2013
+#      by: pyside-uic 0.2.14 running on PySide 1.1.2
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -24,7 +24,7 @@ class Ui_Dialog(object):
         self.verticalLayout.setSizeConstraint(QtGui.QLayout.SetDefaultConstraint)
         self.verticalLayout.setObjectName("verticalLayout")
         self.tableWidget = QtGui.QTableWidget(self.groupBox)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Fixed)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.tableWidget.sizePolicy().hasHeightForWidth())
@@ -38,6 +38,9 @@ class Ui_Dialog(object):
         self.tableWidget.setHorizontalHeaderItem(1, item)
         item = QtGui.QTableWidgetItem()
         self.tableWidget.setHorizontalHeaderItem(2, item)
+        self.tableWidget.horizontalHeader().setVisible(True)
+        self.tableWidget.horizontalHeader().setCascadingSectionResizes(False)
+        self.tableWidget.horizontalHeader().setDefaultSectionSize(100)
         self.verticalLayout.addWidget(self.tableWidget)
         self.closeButton = QtGui.QPushButton(self.groupBox)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Fixed)
@@ -50,7 +53,7 @@ class Ui_Dialog(object):
         self.verticalLayout.addWidget(self.closeButton)
         self.gridLayout.addLayout(self.verticalLayout, 0, 0, 1, 1)
         self.MayaviScene = MayaviSceneWidget(self.groupBox)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.MayaviScene.sizePolicy().hasHeightForWidth())
@@ -64,6 +67,7 @@ class Ui_Dialog(object):
 
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(QtGui.QApplication.translate("Dialog", "Model Viewer", None, QtGui.QApplication.UnicodeUTF8))
+        self.tableWidget.setSortingEnabled(False)
         self.tableWidget.horizontalHeaderItem(0).setText(QtGui.QApplication.translate("Dialog", "Visible", None, QtGui.QApplication.UnicodeUTF8))
         self.tableWidget.horizontalHeaderItem(1).setText(QtGui.QApplication.translate("Dialog", "Object", None, QtGui.QApplication.UnicodeUTF8))
         self.tableWidget.horizontalHeaderItem(2).setText(QtGui.QApplication.translate("Dialog", "Type", None, QtGui.QApplication.UnicodeUTF8))
