@@ -24,6 +24,8 @@ from PySide.QtGui import QDialog, QFileDialog, QDialogButtonBox, QAbstractItemVi
 from PySide.QtCore import Qt
 
 from mayaviviewerstep.widgets.ui_mayaviviewerwidget import Ui_Dialog
+from traits.api import HasTraits, Instance, on_trait_change, \
+    Int, Dict
 
 from fieldwork.field import geometric_field
 
@@ -245,15 +247,15 @@ class MayaviViewerObjectsContainer(object):
         return self._objects[name]
 
     def getObjectType(self, name):
-        return self._objects[name][0]
+        return self._objects[name].typeName
 
     def getObject(self, name):
-        return self._objects[name][1]
+        return self._objects[name]
 
     def getObjectNamesOfType(self, typeName):
         ret = []
-        for name, (t, o) in self._objects.items():
-            if typeName==t:
+        for name, o in self._objects.items():
+            if o.typeName==t:
                 ret.append(name)
 
         return ret
@@ -264,7 +266,7 @@ class MayaviViewerObjectsContainer(object):
     def getNumberOfObjects(self):
         return len(self._objects.keys())
 
-
+#=================================================================================#
 class MayaviViewerWidget(QDialog):
     '''
     Configure dialog to present the user with the options to configure this step.
@@ -284,7 +286,7 @@ class MayaviViewerWidget(QDialog):
         self._ui = Ui_Dialog()
         self._ui.setupUi(self)
 
-        self._view = self._ui.MayaviScene.visualisation.view
+        # self._view = self._ui.MayaviScene.visualisation.view
         self._scene = self._ui.MayaviScene.visualisation.scene
         if isinstance(viewerObjects, MayaviViewerObjectsContainer):
             self._objects = viewerObjects       # models, point clouds, tri-mesh, measurements etc to be rendered {name:(type, object)}
@@ -299,6 +301,8 @@ class MayaviViewerWidget(QDialog):
 
         self.selectedObjectName = None
 
+        self.testPlot()
+
     def _populateObjectTable(self):
 
         self._ui.tableWidget.setRowCount(self._objects.getNumberOfObjects())
@@ -310,8 +314,11 @@ class MayaviViewerWidget(QDialog):
         row = 0
         for name in self._objects.getObjectNames():
             typeName = self._objects.getObjectType(name)
+            print typeName
+            print name
             self._ui.tableWidget.setItem(row, self.objectTableHeaderColumns['name'], QTableWidgetItem(name))
             self._ui.tableWidget.setItem(row, self.objectTableHeaderColumns['type'], QTableWidgetItem(typeName))
+            row += 1
 
     def _makeConnections(self):
         self._ui.tableWidget.itemClicked.connect(self._tableItemClicked)
@@ -354,7 +361,18 @@ class MayaviViewerWidget(QDialog):
     def _drawGeometricField( self, name ):
         self._objects.getObject(name).draw(self.scene, scalarName)
 
-    #================================================================+#
+    #================================================================#
+    @on_trait_change('scene.activated')
+    def testPlot(self):
+        # This function is called when the view is opened. We don't
+        # populate the scene when the view is not yet open, as some
+        # VTK features require a GLContext.
+        print 'trait_changed'
+
+        # We can do normal mlab calls on the embedded scene.
+        self._scene.mlab.test_points3d()
+
+
     # def _saveImage_fired( self ):
     #     self.scene.mlab.savefig( str(self.saveImageFilename), size=( int(self.saveImageWidth), int(self.saveImageLength) ) )
         

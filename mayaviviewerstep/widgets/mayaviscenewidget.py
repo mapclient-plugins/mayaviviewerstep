@@ -12,17 +12,17 @@ from mayavi.core.ui.api import MayaviScene, MlabSceneModel, \
 
 ################################################################################
 #The actual visualization
-class Visualization(HasTraits):
+class Visualisation(HasTraits):
     scene = Instance(MlabSceneModel, ())
 
-    @on_trait_change('scene.activated')
-    def update_plot(self):
-        # This function is called when the view is opened. We don't
-        # populate the scene when the view is not yet open, as some
-        # VTK features require a GLContext.
+    # @on_trait_change('scene.activated')
+    # def update_plot(self):
+    #     # This function is called when the view is opened. We don't
+    #     # populate the scene when the view is not yet open, as some
+    #     # VTK features require a GLContext.
 
-        # We can do normal mlab calls on the embedded scene.
-        self.scene.mlab.test_points3d()
+    #     # We can do normal mlab calls on the embedded scene.
+    #     self.scene.mlab.test_points3d()
 
     # the layout of the dialog screated
     view = View(Item('scene', editor=SceneEditor(scene_class=MayaviScene),
@@ -40,7 +40,10 @@ class MayaviSceneWidget(QtGui.QWidget):
         layout = QtGui.QVBoxLayout(self)
         # layout.setMargin(0)
         # layout.setSpacing(0)
-        self.visualization = Visualization()
+        self.visualisation = Visualisation()
+        print '############'
+        print self.visualisation.__dict__
+        print '############'
 
         # If you want to debug, beware that you need to remove the Qt
         # input hook.
@@ -49,11 +52,11 @@ class MayaviSceneWidget(QtGui.QWidget):
         #QtCore.pyqtRestoreInputHook()
 
         # The edit_traits call will generate the widget to embed.
-        # self.ui = self.visualization.edit_traits(parent=self,
-        #                                          kind='subpanel').control
-        self.ui = self.visualization.edit_traits(parent=self,
-                                                 kind='modal').control
+        self.ui = self.visualisation.edit_traits(parent=self,
+                                                 kind='subpanel').control
+        # self.ui = self.visualisation.edit_traits(parent=self,
+        #                                          kind='modal').control
         layout.addWidget(self.ui)
         self.ui.setParent(self)
+        self.setLayout(layout)
 
-        # self.setLayout(layout)

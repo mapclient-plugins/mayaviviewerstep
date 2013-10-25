@@ -93,8 +93,6 @@ class MayaviViewerStep(WorkflowStepMountPoint):
     def execute(self, dataIn):
         print 'launching MayaviViewerStep'
 
-        MayaviViewerWidget, MayaviViewerObjectsContainer, MayaviViewerFieldworkModel
-
         # package models the for viewer
         objectContainer = MayaviViewerObjectsContainer()
         for name, model in dataIn.items():
