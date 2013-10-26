@@ -29,7 +29,9 @@ import numpy as np
 from mayaviviewerstep.mayaviviewerdata import StepState
 from mayaviviewerstep.widgets.configuredialog import ConfigureDialog
 from mayaviviewerstep.widgets.mayaviviewerwidget import MayaviViewerWidget
-from mayaviviewerstep.widgets.mayaviviewerobjects import MayaviViewerObjectsContainer, MayaviViewerFieldworkModel
+from mayaviviewerstep.widgets.mayaviviewerobjects import MayaviViewerObjectsContainer
+from mayaviviewerstep.widgets.mayaviviewerfieldworkmodel import MayaviViewerFieldworkModel
+from mayaviviewerstep.widgets.mayaviviewerfemurmeasurements import MayaviViewerFemurMeasurements
 
 class MayaviViewerStep(WorkflowStepMountPoint):
     '''

@@ -27,8 +27,7 @@ from mayaviviewerstep.widgets.ui_mayaviviewerwidget import Ui_Dialog
 from traits.api import HasTraits, Instance, on_trait_change, \
     Int, Dict
 
-from fieldwork.field import geometric_field
-from mayaviviewerobjects import colours, MayaviViewerObjectsContainer, MayaviViewerFieldworkModel
+from mayaviviewerobjects import colours, MayaviViewerObjectsContainer
 
 class MayaviViewerWidget(QDialog):
     '''
@@ -63,7 +62,7 @@ class MayaviViewerWidget(QDialog):
         self.selectedObjectName = None
 
         # self.testPlot()
-        self.drawGFs()
+        self.drawObjects()
 
     def _makeConnections(self):
         self._ui.tableWidget.itemClicked.connect(self._tableItemClicked)
@@ -107,13 +106,15 @@ class MayaviViewerWidget(QDialog):
         name = self._getSelectedObjectName()
 
         # get visible status
-        visible = self._visibleCheckBoxes[name].checkState()
+        visible = self._visibleCheckBoxes[name].checkState().name=='Checked'
 
         # toggle visibility
         obj = self._objects.getObject(name)
         if obj.sceneObject:
+            print 'changing existing visibility'
             obj.setVisibility(visible)
         else:
+            print 'drawing new'
             obj.draw(self._scene)
 
     def _populateScalarsDropDown(self, objectName):
@@ -122,7 +123,7 @@ class MayaviViewerWidget(QDialog):
     def _scalarSelectionChanged(self):
         name = self._getSelectedObjectName()
         scalarName = self._getSelectedScalarName()
-        self._objects.getObject(name).updateScalar(scalarName, self.scene)
+        self._objects.getObject(name).updateScalar(scalarName, self._scene)
 
     def _getSelectedObjectName(self):
         return self.selectedObjectName
@@ -130,13 +131,9 @@ class MayaviViewerWidget(QDialog):
     def _getSelectedScalarName(self):
         return 'none'
 
-    #===============================================================================#
-    def _drawGeometricField( self, name ):
-        self._objects.getObject(name).draw(self._scene)
-
-    def drawGFs(self):
+    def drawObjects(self):
         for name in self._objects.getObjectNames():
-            self._drawGeometricField(name)
+            self._objects.getObject(name).draw(self._scene)
 
     #================================================================#
     @on_trait_change('scene.activated')
