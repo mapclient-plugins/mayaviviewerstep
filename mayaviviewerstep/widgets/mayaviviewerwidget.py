@@ -62,7 +62,7 @@ class MayaviViewerWidget(QDialog):
         self.selectedObjectName = None
 
         # self.testPlot()
-        self.drawObjects()
+        # self.drawObjects()
 
     def _makeConnections(self):
         self._ui.tableWidget.itemClicked.connect(self._tableItemClicked)
@@ -91,6 +91,7 @@ class MayaviViewerWidget(QDialog):
 
         checkbox = QTableWidgetItem()
         checkbox.setCheckState(Qt.Checked)
+        checkbox.objectName = name
         self._ui.tableWidget.setItem(row, self.objectTableHeaderColumns['visible'], checkbox); 
         self._visibleCheckBoxes[name] = checkbox
 
@@ -101,15 +102,22 @@ class MayaviViewerWidget(QDialog):
         print selectedRow
         print self.selectedObjectName
 
-    def _visibleBoxChanged(self):
+    def _visibleBoxChanged(self, checkbox):
         # get name of object selected
-        name = self._getSelectedObjectName()
+        # name = self._getSelectedObjectName()
 
         # get visible status
-        visible = self._visibleCheckBoxes[name].checkState().name=='Checked'
+        name = checkbox.objectName
+        visible = checkbox.checkState().name=='Checked'
+
+        # visible = self._visibleCheckBoxes[name].checkState().name=='Checked'
+
+        print 'visibleboxchanged name', name
+        print 'visibleboxchanged visible', visible
 
         # toggle visibility
         obj = self._objects.getObject(name)
+        print obj.name
         if obj.sceneObject:
             print 'changing existing visibility'
             obj.setVisibility(visible)
