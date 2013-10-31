@@ -41,14 +41,34 @@ class MayaviViewerStep(WorkflowStepMountPoint):
     
     def __init__(self, location):
         super(MayaviViewerStep, self).__init__('Mayavi 3D Model Viewer', location)
+        self._category = 'Visualisation'
         self._state = StepState()
         self._icon = QtGui.QImage(':/zincmodelsource/images/zinc_model_icon.png')   # change this
-        # self.addPort(('http://physiomeproject.org/workflow/1.0/rdf-schema#port', 'http://physiomeproject.org/workflow/1.0/rdf-schema#uses', 'ju#fieldviviewer'))
-        # self.addPort(('http://physiomeproject.org/workflow/1.0/rdf-schema#port', 'http://physiomeproject.org/workflow/1.0/rdf-schema#uses', 'ju#femurmeasurements'))
-        self.addPort(('http://physiomeproject.org/workflow/1.0/rdf-schema#port', 'http://physiomeproject.org/workflow/1.0/rdf-schema#uses', 'ju#fieldworkmodeldict'))
-        # self.addPort(('http://physiomeproject.org/workflow/1.0/rdf-schema#port', 'http://physiomeproject.org/workflow/1.0/rdf-schema#provides', 'ju#fieldviviewer'))
+        self.addPort(('http://physiomeproject.org/workflow/1.0/rdf-schema#port',
+                      'http://physiomeproject.org/workflow/1.0/rdf-schema#uses',
+                      'ju#fieldworkmodeldict'))
+        self.addPort(('http://physiomeproject.org/workflow/1.0/rdf-schema#port',
+                      'http://physiomeproject.org/workflow/1.0/rdf-schema#uses',
+                      'ju#fieldworkmeasurementdict'))
+        self.addPort(('http://physiomeproject.org/workflow/1.0/rdf-schema#port',
+                      'http://physiomeproject.org/workflow/1.0/rdf-schema#uses',
+                      'ju#pointclouddict'))
+        self.addPort(('http://physiomeproject.org/workflow/1.0/rdf-schema#port',
+                      'http://physiomeproject.org/workflow/1.0/rdf-schema#uses',
+                      'ju#imagedict'))
+        self.addPort(('http://physiomeproject.org/workflow/1.0/rdf-schema#port',
+                      'http://physiomeproject.org/workflow/1.0/rdf-schema#uses',
+                      'ju#simplemeshdict'))
         self._widget = None
         self._configured = False
+
+        self._addObjectMethods = [self._addFieldworkModels,
+                                  self._addFieldworkMeasurements,
+                                  # self._addPointClouds,
+                                  # self._addImages,
+                                  # self._addSimplemeshes,
+                                  ]
+        self.objectContainer = MayaviViewerObjectsContainer()
 
     def configure(self):
         d = ConfigureDialog(self._state)
@@ -93,25 +113,57 @@ class MayaviViewerStep(WorkflowStepMountPoint):
         self._configured = d.validate()
         pass
  
-    def execute(self, dataIn):
+    def setPortData(self, index, dataIn):
+        if not isinstance(dataIn, dict):
+            raise TypeError, 'mayaviviewerstep expects a dictionary as input'
+
+        self._addObjectMethods[index](dataIn)
+
+    def execute(self):
         print 'launching MayaviViewerStep'
-
-        # package models the for viewer
-        objectContainer = MayaviViewerObjectsContainer()
-        for name, model in dataIn.items():
-            # only GFs
-            renderArgs = eval(self._state._renderArgs)
-            obj = MayaviViewerFieldworkModel(name, model, [8,8], evaluator=None, renderArgs=renderArgs, fields=None, fieldName=None, PC=None)
-            objectContainer.addObject(name, obj)
-
         if not self._widget:
             # self._widget = MayaviViewerWidget(objectContainer, parent=self)
-            self._widget = MayaviViewerWidget(objectContainer)
+            self._widget = MayaviViewerWidget(self.objectContainer)
             self._widget._ui.closeButton.clicked.connect(self._doneExecution)
             self._widget.setModal(True)
 
         self._setCurrentWidget(self._widget)
-     
+
+    def _addFieldworkModels(self, D):
+        for name, model in D.items():
+            renderArgs = eval(self._state._renderArgs)
+            obj = MayaviViewerFieldworkModel(name, model, [8,8], evaluator=None,
+                                             renderArgs=renderArgs, fields=None,
+                                             fieldName=None, PC=None)
+            self.objectContainer.addObject(name, obj)
+
+    def _addFieldworkMeasurements(self, D):
+        pass
+        # for name, M in D.items():
+        #     renderArgs = eval(self._state._renderArgs)
+        #     obj = MayaviViewerFieldworkMeasurements(name, M)
+        #     self.objectContainer.addObject(name, obj)
+        
+    # def _addPointClouds(self, D):
+    #     for name, P in D.items():
+    #         renderArgs = eval(self._state._renderArgs)
+    #         obj = MayaviViewerPointCloud(name, P, renderArgs=renderArgs)
+    #         self.objectContainer.addObject(name, obj)
+
+        
+    # def _addImages(self, D):        
+    #     for name, I in D.items():
+    #         renderArgs = eval(self._state._renderArgs)
+    #         obj = MayaviViewerImageVolume(name, I, renderArgs=renderArgs)
+    #         self.objectContainer.addObject(name, obj)
+
+        
+    # def _addSimplemeshes(self, D):
+    #     for name, S in D.items():
+    #         renderArgs = eval(self._state._renderArgs)
+    #         obj = MayaviViewerSimpleMesh(name, model, renderArgs=renderArgs)
+    #         self.objectContainer.addObject(name, obj)
+
 def getConfigFilename(identifier):
     return identifier + '.conf'
 
