@@ -83,6 +83,8 @@ class MayaviViewerFemurMeasurements(MayaviViewerObject):
 		self._drawFemoralAxisLength(scene)			
 		# draw neck width and tube
 		self._drawNeckWidth(scene)
+		# draw neck shaft angle
+		self._drawNeckShaftAngle(scene)
 		# draw subtrochanteric width
 		self._drawSubTrochantericWidth(scene)
 		# draw midshaft width and tube
@@ -178,10 +180,22 @@ class MayaviViewerFemurMeasurements(MayaviViewerObject):
 		self._addText3D(scene, 'femoral axis length', FAL.value, 'mm', G, [-220.0,0.0,220.0])
 
 	def _drawNeckShaftAngle(self, scene):
-		pass
-		# NSA = M.measurements['neck_shaft_angle']
-		# O = 
-		# self._addText3D(F, 'neck shaft angle', NSA.value, 'degrees', O, [-100.0,0.0,0.0])
+		
+		NSA = self._M.measurements['neck_shaft_angle']
+		angleDegrees = NSA.value*180.0/np.pi
+		
+		# find closest approach between shaft axis and neck axis
+		saPoints = self._M.shaftAxis.eval(np.linspace(0,300,200))
+		naPoints = self._M.neckAxis.eval(np.linspace(-100,100,200))
+
+		closestSAPoint = saPoints[np.argmin([self._M.neckAxis.calcDistanceFromPoint(p) for p in saPoints])]
+		closestNAPoint = naPoints[np.argmin([self._M.shaftAxis.calcDistanceFromPoint(p) for p in naPoints])]
+
+		# mid point of closest points is where glyph is drawn
+		O = (closestNAPoint + closestSAPoint)*0.5
+		NSAPoint = scene.mlab.points3d( [O[0]], [O[1]], [O[2]], name='glyph_NSAPoint', mode='sphere', scale_factor=15, resolution=16, color=(1.0,0.0,0.0) )
+		self.sceneObject.addSceneObject('glyph_NSAPoint', NSAPoint)
+		self._addText3D(scene, 'neck shaft angle', angleDegrees, 'degrees', O, [100.0,0.0,-130.0])
 
 	def _drawSubTrochantericWidth(self, scene):
 		sTW = self._M.measurements['subtrochanteric_width']
@@ -194,7 +208,7 @@ class MayaviViewerFemurMeasurements(MayaviViewerObject):
 		sTWLine = scene.mlab.plot3d(points[0], points[1], points[2], name='glyph_sTWLine', tube_radius=1.0 )
 		self.sceneObject.addSceneObject('glyph_sTWLine', sTWLine)
 
-		self._addText3D(scene, 'subtrochanteric width', sTW.value, 'mm', sTW.p1, [100.0,0.0,-100.0])
+		self._addText3D(scene, 'subtrochanteric width', sTW.value, 'mm', sTW.p1, [100.0,0.0,-140.0])
 
 	def _drawMidshaftWidth(self, scene):
 		mSW = self._M.measurements['midshaft_width']
@@ -207,7 +221,7 @@ class MayaviViewerFemurMeasurements(MayaviViewerObject):
 		mSWLine = scene.mlab.plot3d(points[0], points[1], points[2], name='glyph_midshaftWidthLine', tube_radius=1.0 )
 		self.sceneObject.addSceneObject('glyph_midshaftWidthLine', mSWLine)
 
-		self._addText3D(scene, 'midshaft width', mSW.value, 'mm', mSW.p1, [100.0,0.0,-100.0])
+		self._addText3D(scene, 'midshaft width', mSW.value, 'mm', mSW.p1, [100.0,0.0,-140.0])
 
 		# draw midshaft tube
 		if self._drawWidthTubes:
