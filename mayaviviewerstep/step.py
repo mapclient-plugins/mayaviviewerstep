@@ -31,7 +31,7 @@ from mayaviviewerstep.widgets.configuredialog import ConfigureDialog
 from mayaviviewerstep.widgets.mayaviviewerwidget import MayaviViewerWidget
 from mayaviviewerstep.widgets.mayaviviewerobjects import MayaviViewerObjectsContainer
 from mayaviviewerstep.widgets.mayaviviewerfieldworkmodel import MayaviViewerFieldworkModel
-from mayaviviewerstep.widgets.mayaviviewerfemurmeasurements import MayaviViewerFemurMeasurements
+from mayaviviewerstep.widgets import mayaviviewerfieldworkmeasurements as MVFM
 
 class MayaviViewerStep(WorkflowStepMountPoint):
     '''
@@ -121,11 +121,10 @@ class MayaviViewerStep(WorkflowStepMountPoint):
 
     def execute(self):
         print 'launching MayaviViewerStep'
-        if not self._widget:
-            # self._widget = MayaviViewerWidget(objectContainer, parent=self)
-            self._widget = MayaviViewerWidget(self.objectContainer)
-            self._widget._ui.closeButton.clicked.connect(self._doneExecution)
-            self._widget.setModal(True)
+        # if not self._widget:
+        self._widget = MayaviViewerWidget(self.objectContainer)
+        self._widget._ui.closeButton.clicked.connect(self._doneExecution)
+        self._widget.setModal(True)
 
         self._setCurrentWidget(self._widget)
 
@@ -138,11 +137,14 @@ class MayaviViewerStep(WorkflowStepMountPoint):
             self.objectContainer.addObject(name, obj)
 
     def _addFieldworkMeasurements(self, D):
-        pass
-        # for name, M in D.items():
-        #     renderArgs = eval(self._state._renderArgs)
-        #     obj = MayaviViewerFieldworkMeasurements(name, M)
-        #     self.objectContainer.addObject(name, obj)
+        for name, M in D.items():
+            renderArgs = eval(self._state._renderArgs)
+
+            # a bit hacky yea
+            if 'femur' in name.lower():
+                print 'ADDING MEASUREMENT', name
+                obj = MVFM.MayaviViewerFemurMeasurements(name, M)
+                self.objectContainer.addObject(name, obj)
         
     # def _addPointClouds(self, D):
     #     for name, P in D.items():

@@ -52,11 +52,6 @@
           </column>
           <column>
            <property name="text">
-            <string>Object</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
             <string>Type</string>
            </property>
           </column>

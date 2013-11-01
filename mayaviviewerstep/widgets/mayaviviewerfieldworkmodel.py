@@ -40,6 +40,19 @@ class MayaviViewerFieldworkModelSceneObject(MayaviViewerSceneObject):
         if self.elemLines:
             self.elemLines = linesVisible
 
+    def remove(self):
+        if self.mesh:
+            self.mesh.remove()
+            self.mesh = None
+
+        if self.points:
+            self.points.remove()
+            self.points = None
+
+        if self.elemLines:
+            self.elemLines.remove()
+            self.elemLines = None
+
 class MayaviViewerFieldworkModel(MayaviViewerObject):
 
     typeName = 'fieldworkmodel'
@@ -81,6 +94,10 @@ class MayaviViewerFieldworkModel(MayaviViewerObject):
 
     def setVisibility(self, visible):
         self.sceneObject.setVisibility(visible, self.displayGFNodes&visible, visible)
+
+    def remove(self):
+        self.sceneObject.remove()
+        self.sceneObject = None
 
     def draw(self, scene):
         scene.disable_render = True

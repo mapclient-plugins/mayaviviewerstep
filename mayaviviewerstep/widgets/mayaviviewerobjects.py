@@ -42,6 +42,9 @@ class MayaviViewerObject(object):
     def updateScalar(self, scalarName):
         pass
 
+    def remove(self):
+        pass
+
 
 class MayaviViewerSceneObject(object):
 
@@ -56,8 +59,8 @@ class MayaviViewerObjectsContainer(object):
         self._objects = {}
 
     def addObject(self, name, obj):
-        if name in self._objects.keys():
-            raise ValueError, 'name must be unique'
+        # if name in self._objects.keys():
+        #     raise ValueError, 'name must be unique'
 
         if not isinstance(obj, MayaviViewerObject):
             raise TypeError, 'obj must a MayaviViewerObject'

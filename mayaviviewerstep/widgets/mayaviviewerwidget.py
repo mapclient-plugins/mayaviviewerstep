@@ -37,8 +37,9 @@ class MayaviViewerWidget(QDialog):
     GFD = [10,10]
     displayGFNodes = True
     defaultColor = colours['bone']
-    objectTableHeaderColumns = {'visible':0, 'name':1, 'type':2}
+    objectTableHeaderColumns = {'visible':0, 'type':1}
     mergeGFVertices = False
+    backgroundColour = (0,0,0)
 
     def __init__(self, viewerObjects, parent=None):
         '''
@@ -50,15 +51,17 @@ class MayaviViewerWidget(QDialog):
 
         # self._view = self._ui.MayaviScene.visualisation.view
         self._scene = self._ui.MayaviScene.visualisation.scene
+        self._scene.background = self.backgroundColour
+
         if isinstance(viewerObjects, MayaviViewerObjectsContainer):
             self._objects = viewerObjects       # models, point clouds, tri-mesh, measurements etc to be rendered {name:(type, object)}
         else:
             raise TypeError, 'viewerObject must be a MayaviViewerObjects instance'
 
         self._makeConnections()
-        self._visibleCheckBoxes = {}
         self._initialiseObjectTable()
-        
+        self._refresh()
+
         self.selectedObjectName = None
 
         # self.testPlot()
@@ -67,6 +70,7 @@ class MayaviViewerWidget(QDialog):
     def _makeConnections(self):
         self._ui.tableWidget.itemClicked.connect(self._tableItemClicked)
         self._ui.tableWidget.itemChanged.connect(self._visibleBoxChanged)
+        self._ui.closeButton.clicked.connect(self._close)
 
     def _initialiseObjectTable(self):
 
@@ -75,55 +79,54 @@ class MayaviViewerWidget(QDialog):
         self._ui.tableWidget.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self._ui.tableWidget.setSelectionBehavior(QAbstractItemView.SelectRows)
         self._ui.tableWidget.setSelectionMode(QAbstractItemView.SingleSelection)
-        self._ui.tableWidget.resizeColumnToContents(self.objectTableHeaderColumns['visible'])
+        
         row = 0
         for name in self._objects.getObjectNames():
             obj = self._objects.getObject(name)
             self._addObjectToTable(row, name, obj)
             row += 1
 
+        self._ui.tableWidget.resizeColumnToContents(self.objectTableHeaderColumns['visible'])
+        self._ui.tableWidget.resizeColumnToContents(self.objectTableHeaderColumns['type'])
+
     def _addObjectToTable(self, row, name, obj):
         typeName = obj.typeName
         print typeName
         print name
-        self._ui.tableWidget.setItem(row, self.objectTableHeaderColumns['name'], QTableWidgetItem(name))
+        tableItem = QTableWidgetItem(name)
+        tableItem.setCheckState(Qt.Checked)
+        self._ui.tableWidget.setItem(row, self.objectTableHeaderColumns['visible'], tableItem)
         self._ui.tableWidget.setItem(row, self.objectTableHeaderColumns['type'], QTableWidgetItem(typeName))
-
-        checkbox = QTableWidgetItem()
-        checkbox.setCheckState(Qt.Checked)
-        checkbox.objectName = name
-        self._ui.tableWidget.setItem(row, self.objectTableHeaderColumns['visible'], checkbox); 
-        self._visibleCheckBoxes[name] = checkbox
 
     def _tableItemClicked(self):
         selectedRow = self._ui.tableWidget.currentRow()
-        self.selectedObjectName = self._ui.tableWidget.item(selectedRow, self.objectTableHeaderColumns['name']).text()
+        self.selectedObjectName = self._ui.tableWidget.item(selectedRow, self.objectTableHeaderColumns['visible']).text()
         self._populateScalarsDropDown(self.selectedObjectName)
         print selectedRow
         print self.selectedObjectName
 
-    def _visibleBoxChanged(self, checkbox):
+    def _visibleBoxChanged(self, tableItem):
         # get name of object selected
         # name = self._getSelectedObjectName()
 
-        # get visible status
-        name = checkbox.objectName
-        visible = checkbox.checkState().name=='Checked'
+        # checked changed item is actually the checkbox
+        if tableItem.column()==self.objectTableHeaderColumns['visible']:
+            # get visible status
+            name = tableItem.text()
+            visible = tableItem.checkState().name=='Checked'
 
-        # visible = self._visibleCheckBoxes[name].checkState().name=='Checked'
+            print 'visibleboxchanged name', name
+            print 'visibleboxchanged visible', visible
 
-        print 'visibleboxchanged name', name
-        print 'visibleboxchanged visible', visible
-
-        # toggle visibility
-        obj = self._objects.getObject(name)
-        print obj.name
-        if obj.sceneObject:
-            print 'changing existing visibility'
-            obj.setVisibility(visible)
-        else:
-            print 'drawing new'
-            obj.draw(self._scene)
+            # toggle visibility
+            obj = self._objects.getObject(name)
+            print obj.name
+            if obj.sceneObject:
+                print 'changing existing visibility'
+                obj.setVisibility(visible)
+            else:
+                print 'drawing new'
+                obj.draw(self._scene)
 
     def _populateScalarsDropDown(self, objectName):
         pass
@@ -142,6 +145,29 @@ class MayaviViewerWidget(QDialog):
     def drawObjects(self):
         for name in self._objects.getObjectNames():
             self._objects.getObject(name).draw(self._scene)
+
+    def _close(self):
+        for name in self._objects.getObjectNames():
+            self._objects.getObject(name).remove()
+
+        # for r in xrange(self._ui.tableWidget.rowCount()):
+        #     self._ui.tableWidget.removeRow(r)
+
+    def _refresh(self):
+        for r in xrange(self._ui.tableWidget.rowCount()):
+            tableItem = self._ui.tableWidget.item(r, self.objectTableHeaderColumns['visible'])
+            name = tableItem.text()
+            visible = tableItem.checkState().name=='Checked'
+            obj = self._objects.getObject(name)
+            print obj.name
+            if obj.sceneObject:
+                print 'changing existing visibility'
+                obj.setVisibility(visible)
+            else:
+                print 'drawing new'
+                obj.draw(self._scene)
+
+
 
     #================================================================#
     @on_trait_change('scene.activated')
