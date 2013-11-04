@@ -71,6 +71,10 @@ class MayaviViewerWidget(QDialog):
     def _makeConnections(self):
         self._ui.tableWidget.itemClicked.connect(self._tableItemClicked)
         self._ui.tableWidget.itemChanged.connect(self._visibleBoxChanged)
+        self._ui.screenshotSaveButton.clicked.connect(self._saveScreenShot)
+        self._ui.slicePlaneRadioX.toggled.connect(self._slicePlaneXToggled)
+        self._ui.slicePlaneRadioY.toggled.connect(self._slicePlaneYToggled)
+        self._ui.slicePlaneRadioZ.toggled.connect(self._slicePlaneZToggled)
         self._ui.closeButton.clicked.connect(self._close)
 
     def _initialiseObjectTable(self):
@@ -105,6 +109,18 @@ class MayaviViewerWidget(QDialog):
         self._populateScalarsDropDown(self.selectedObjectName)
         print selectedRow
         print self.selectedObjectName
+
+        obj = self._objects.getObject(self.selectedObjectName)
+        # enable/disable image plane toggles if gias scan is selected
+        if obj.typeName=='giasscan':
+            self._ui.slicePlaneRadioX.setEnabled(True)
+            self._ui.slicePlaneRadioY.setEnabled(True)
+            self._ui.slicePlaneRadioZ.setEnabled(True)
+        else:
+            self._ui.slicePlaneRadioX.setEnabled(False)
+            self._ui.slicePlaneRadioY.setEnabled(False)
+            self._ui.slicePlaneRadioZ.setEnabled(False)
+
 
     def _visibleBoxChanged(self, tableItem):
         # get name of object selected
@@ -151,6 +167,9 @@ class MayaviViewerWidget(QDialog):
         for name in self._objects.getObjectNames():
             self._objects.getObject(name).remove()
 
+        self._objects._objects = {}
+        self._objects == None
+
         # for r in xrange(self._ui.tableWidget.rowCount()):
         #     self._ui.tableWidget.removeRow(r)
 
@@ -168,6 +187,29 @@ class MayaviViewerWidget(QDialog):
                 print 'drawing new'
                 obj.draw(self._scene)
 
+    def _saveScreenShot(self):
+        filename = self._ui.screenshotFilenameLineEdit.text()
+        width = int(self._ui.screenshotPixelXLineEdit.text())
+        height = int(self._ui.screenshotPixelYLineEdit.text())
+        self._scene.mlab.savefig( filename, size=( width, height ) )
+
+    def _slicePlaneXToggled(self, checked):
+        name = self._getSelectedObjectName()
+        obj = self._objects.getObject(name)
+        if checked:
+            obj.changeSlicePlane('x_axes')
+
+    def _slicePlaneYToggled(self, checked):
+        name = self._getSelectedObjectName()
+        obj = self._objects.getObject(name)
+        if checked:
+            obj.changeSlicePlane('y_axes')
+
+    def _slicePlaneZToggled(self, checked):
+        name = self._getSelectedObjectName()
+        obj = self._objects.getObject(name)
+        if checked:
+            obj.changeSlicePlane('z_axes')
 
 
     #================================================================#

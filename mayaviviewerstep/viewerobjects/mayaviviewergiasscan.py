@@ -26,22 +26,27 @@ class MayaviViewerGiasScanSceneObject(MayaviViewerSceneObject):
 
     typeName = 'giasscan'
 
-    def __init__(self, name, slicerWidget):
+    def __init__(self, name, slicerWidget, ISrc):
         self.name = name
         self.slicerWidget = slicerWidget
+        self.ISrc = ISrc
 
     def setVisibility(self, visible):
         if self.slicerWidget:
-            self.slicerWidget = visible
+            self.slicerWidget.visible = visible
 
     def remove(self):
         if self.slicerWidget:
             self.slicerWidget.remove()
             self.slicerWidget = None
 
+        if self.ISrc:
+            self.ISrc.remove()
+            self.ISrc = None
+
 class MayaviViewerGiasScan(MayaviViewerObject):
 
-    typeName = 'fieldworkmodel'
+    typeName = 'giasscan'
     _vmax = 1800
     _vmin = -200
     _colourMap = 'black-white'
@@ -72,11 +77,16 @@ class MayaviViewerGiasScan(MayaviViewerObject):
     def remove(self):
         self.sceneObject.remove()
         self.sceneObject = None
+        self.scan = None
 
     def draw(self, scene):
         scene.disable_render = True
         
-        I = self.scan.I
+        try:
+            I = self.scan.I
+        except AttributeError:
+            print 'scan is None:', self.name
+
         ISrc = mlab.pipeline.scalar_field(I, colormap=self.renderArgs['colormap'])
         slicerWidget = scene.mlab.pipeline.image_plane_widget(ISrc,
                                                             plane_orientation=self._slicePlane,
@@ -84,7 +94,7 @@ class MayaviViewerGiasScan(MayaviViewerObject):
                                                             **self.renderArgs
                                                             )
         mlab.outline()
-        self.sceneObject = MayaviViewerGiasScanSceneObject(self.name, slicerWidget)
+        self.sceneObject = MayaviViewerGiasScanSceneObject(self.name, slicerWidget, ISrc)
         scene.disable_render = False
 
         return self.sceneObject
