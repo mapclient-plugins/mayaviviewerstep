@@ -31,6 +31,7 @@ from mayaviviewerstep.widgets.configuredialog import ConfigureDialog
 from mayaviviewerstep.widgets.mayaviviewerwidget import MayaviViewerWidget
 from mayaviviewerstep.viewerobjects.mayaviviewerobjects import MayaviViewerObjectsContainer
 from mayaviviewerstep.viewerobjects.mayaviviewerfieldworkmodel import MayaviViewerFieldworkModel
+from mayaviviewerstep.viewerobjects.mayaviviewergiasscan import MayaviViewerGiasScan
 from mayaviviewerstep.viewerobjects import mayaviviewerfieldworkmeasurements as MVFM
 
 class MayaviViewerStep(WorkflowStepMountPoint):
@@ -154,11 +155,10 @@ class MayaviViewerStep(WorkflowStepMountPoint):
     #         self.objectContainer.addObject(name, obj)
  
     def _addImages(self, D):
-        pass      
-    #     for name, I in D.items():
-    #         renderArgs = eval(self._state._renderArgs)
-    #         obj = MayaviViewerImageVolume(name, I, renderArgs=renderArgs)
-    #         self.objectContainer.addObject(name, obj)
+        for name, S in D.items():
+            renderArgs = eval(self._state._renderArgs)
+            obj = MayaviViewerGiasScan(name, S, renderArgs=renderArgs)
+            self.objectContainer.addObject(name, obj)
 
         
     def _addSimplemeshes(self, D):
