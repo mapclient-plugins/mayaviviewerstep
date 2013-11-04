@@ -29,9 +29,9 @@ import numpy as np
 from mayaviviewerstep.mayaviviewerdata import StepState
 from mayaviviewerstep.widgets.configuredialog import ConfigureDialog
 from mayaviviewerstep.widgets.mayaviviewerwidget import MayaviViewerWidget
-from mayaviviewerstep.widgets.mayaviviewerobjects import MayaviViewerObjectsContainer
-from mayaviviewerstep.widgets.mayaviviewerfieldworkmodel import MayaviViewerFieldworkModel
-from mayaviviewerstep.widgets import mayaviviewerfieldworkmeasurements as MVFM
+from mayaviviewerstep.viewerobjects.mayaviviewerobjects import MayaviViewerObjectsContainer
+from mayaviviewerstep.viewerobjects.mayaviviewerfieldworkmodel import MayaviViewerFieldworkModel
+from mayaviviewerstep.viewerobjects import mayaviviewerfieldworkmeasurements as MVFM
 
 class MayaviViewerStep(WorkflowStepMountPoint):
     '''
@@ -55,7 +55,7 @@ class MayaviViewerStep(WorkflowStepMountPoint):
                       'ju#pointclouddict'))
         self.addPort(('http://physiomeproject.org/workflow/1.0/rdf-schema#port',
                       'http://physiomeproject.org/workflow/1.0/rdf-schema#uses',
-                      'ju#imagedict'))
+                      'ju#giasscandict'))
         self.addPort(('http://physiomeproject.org/workflow/1.0/rdf-schema#port',
                       'http://physiomeproject.org/workflow/1.0/rdf-schema#uses',
                       'ju#simplemeshdict'))
@@ -64,9 +64,9 @@ class MayaviViewerStep(WorkflowStepMountPoint):
 
         self._addObjectMethods = [self._addFieldworkModels,
                                   self._addFieldworkMeasurements,
-                                  # self._addPointClouds,
-                                  # self._addImages,
-                                  # self._addSimplemeshes,
+                                  self._addPointClouds,
+                                  self._addImages,
+                                  self._addSimplemeshes,
                                   ]
         self.objectContainer = MayaviViewerObjectsContainer()
 
@@ -146,21 +146,23 @@ class MayaviViewerStep(WorkflowStepMountPoint):
                 obj = MVFM.MayaviViewerFemurMeasurements(name, M)
                 self.objectContainer.addObject(name, obj)
         
-    # def _addPointClouds(self, D):
+    def _addPointClouds(self, D):
+        pass
     #     for name, P in D.items():
     #         renderArgs = eval(self._state._renderArgs)
     #         obj = MayaviViewerPointCloud(name, P, renderArgs=renderArgs)
     #         self.objectContainer.addObject(name, obj)
-
-        
-    # def _addImages(self, D):        
+ 
+    def _addImages(self, D):
+        pass      
     #     for name, I in D.items():
     #         renderArgs = eval(self._state._renderArgs)
     #         obj = MayaviViewerImageVolume(name, I, renderArgs=renderArgs)
     #         self.objectContainer.addObject(name, obj)
 
         
-    # def _addSimplemeshes(self, D):
+    def _addSimplemeshes(self, D):
+        pass
     #     for name, S in D.items():
     #         renderArgs = eval(self._state._renderArgs)
     #         obj = MayaviViewerSimpleMesh(name, model, renderArgs=renderArgs)

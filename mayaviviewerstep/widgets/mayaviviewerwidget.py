@@ -27,7 +27,8 @@ from mayaviviewerstep.widgets.ui_mayaviviewerwidget import Ui_Dialog
 from traits.api import HasTraits, Instance, on_trait_change, \
     Int, Dict
 
-from mayaviviewerobjects import colours, MayaviViewerObjectsContainer
+# from mayaviviewerobjects import colours, MayaviViewerObjectsContainer
+from mayaviviewerstep.viewerobjects.mayaviviewerobjects import colours, MayaviViewerObjectsContainer
 
 class MayaviViewerWidget(QDialog):
     '''
