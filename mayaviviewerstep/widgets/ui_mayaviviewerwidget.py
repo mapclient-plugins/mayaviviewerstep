@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'mayaviviewerwidget.ui'
 #
-# Created: Mon Nov  4 16:23:56 2013
-#      by: pyside-uic 0.2.13 running on PySide 1.1.0
+# Created: Mon Nov  4 23:24:29 2013
+#      by: pyside-uic 0.2.14 running on PySide 1.1.2
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -54,10 +54,11 @@ class Ui_Dialog(object):
         self.label.setObjectName("label")
         self.horizontalLayout.addWidget(self.label)
         self.slicePlaneRadioX = QtGui.QRadioButton(self.groupBox)
-        self.slicePlaneRadioX.setChecked(True)
+        self.slicePlaneRadioX.setChecked(False)
         self.slicePlaneRadioX.setObjectName("slicePlaneRadioX")
         self.horizontalLayout.addWidget(self.slicePlaneRadioX)
         self.slicePlaneRadioY = QtGui.QRadioButton(self.groupBox)
+        self.slicePlaneRadioY.setChecked(True)
         self.slicePlaneRadioY.setObjectName("slicePlaneRadioY")
         self.horizontalLayout.addWidget(self.slicePlaneRadioY)
         self.slicePlaneRadioZ = QtGui.QRadioButton(self.groupBox)

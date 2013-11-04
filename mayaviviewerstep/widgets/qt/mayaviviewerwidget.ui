@@ -28,7 +28,6 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
-        <zorder></zorder>
        </widget>
       </item>
       <item row="0" column="0">
@@ -83,7 +82,7 @@
              <string>X</string>
             </property>
             <property name="checked">
-             <bool>true</bool>
+             <bool>false</bool>
             </property>
            </widget>
           </item>
@@ -91,6 +90,9 @@
            <widget class="QRadioButton" name="slicePlaneRadioY">
             <property name="text">
              <string>Y</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
             </property>
            </widget>
           </item>

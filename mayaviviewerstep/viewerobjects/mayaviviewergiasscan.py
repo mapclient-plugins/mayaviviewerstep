@@ -50,7 +50,7 @@ class MayaviViewerGiasScan(MayaviViewerObject):
     _vmax = 1800
     _vmin = -200
     _colourMap = 'black-white'
-    _slicePlane = 'x_axes'
+    _slicePlane = 'y_axes'
 
     def __init__(self, name, scan, renderArgs=None):
         self.name = name
