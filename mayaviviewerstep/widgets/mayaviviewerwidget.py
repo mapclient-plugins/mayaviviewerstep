@@ -40,7 +40,7 @@ class MayaviViewerWidget(QDialog):
     defaultColor = colours['bone']
     objectTableHeaderColumns = {'visible':0, 'type':1}
     mergeGFVertices = False
-    backgroundColour = (0,0,0)
+    backgroundColour = (0.5,0.5,0.5)
 
     def __init__(self, viewerObjects, parent=None):
         '''

@@ -49,6 +49,10 @@ class MayaviViewerFemurMeasurements(MayaviViewerObject):
 
 	typeName = 'fieldworkmeasurements'
 	textMeasurements = ('head_diameter', 'neck_width', 'neck_shaft_angle', 'femoral_axis_length', 'subtrochanteric_width')
+	tubeRadius = 2.0
+	textLineRadius = 0.5
+	charWidth = 0.01
+	textColour = (1,1,1)
 
 	def __init__(self, name, measurements, drawWidthTubes=False, text2d=False):
 		self.name = name
@@ -99,11 +103,10 @@ class MayaviViewerFemurMeasurements(MayaviViewerObject):
 		tx = 0.02
 		ty = 0.02
 		tspacing = 0.05
-		charWidth = 0.01
 		for m in self.textMeasurements:
 			value = self._M.measurements[m].value
 			mString = '{m}: {v:5.2f}'.format(m=m, v=value)
-			sObj = scene.mlab.text(tx, ty, mString, width=len(mString)*charWidth, name='text2d_'+m)
+			sObj = scene.mlab.text(tx, ty, mString, width=len(mString)*self.charWidth, name='text2d_'+m, color=self.textColour)
 			self.sceneObject.addSceneObject('text2d_'+m, sObj)
 			ty += tspacing
 
@@ -111,27 +114,26 @@ class MayaviViewerFemurMeasurements(MayaviViewerObject):
 
 		print 'DRAWING 3D TEXT'
 
-		charWidth = 0.01
-		lineWidth = 0.2
 		textOrigin = np.array(mOrigin)+np.array(offset)
 		textLine = np.array([mOrigin, textOrigin]).T
 		mStr = '{}: {:5.2f} {}'.format(name, value, unit)
-		texts = scene.mlab.text(textOrigin[0], textOrigin[1], mStr, z=textOrigin[2], width=len(mStr)*charWidth, name='text3d_'+name)
+		texts = scene.mlab.text(textOrigin[0], textOrigin[1], mStr, z=textOrigin[2], width=len(mStr)*self.charWidth, name='text3d_'+name, color=self.textColour)
 		self.sceneObject.addSceneObject('text3d_'+name, texts)
-		lines = scene.mlab.plot3d(textLine[0], textLine[1], textLine[2], tube_radius=lineWidth, name='text3dline_'+name)
+		lines = scene.mlab.plot3d(textLine[0], textLine[1], textLine[2], tube_radius=self.textLineRadius, name='text3dline_'+name)
 		self.sceneObject.addSceneObject('text3dline_'+name, lines)
 
 	def _drawAxes(self, scene):
+		tubeRadius = 2.0
 		saPoints = self._M.shaftAxis.eval(np.array([-300,300])).T
-		saSObj = scene.mlab.plot3d(saPoints[0], saPoints[1], saPoints[2], name='axis_shaft', tube_radius=1.0 )
+		saSObj = scene.mlab.plot3d(saPoints[0], saPoints[1], saPoints[2], name='axis_shaft', tube_radius=self.tubeRadius )
 		self.sceneObject.addSceneObject('axis_shaft', saSObj)
 
 		naPoints = self._M.neckAxis.eval(np.array([-100,100])).T
-		naSObj = scene.mlab.plot3d(naPoints[0], naPoints[1], naPoints[2], name='axis_neck', tube_radius=1.0 )
+		naSObj = scene.mlab.plot3d(naPoints[0], naPoints[1], naPoints[2], name='axis_neck', tube_radius=self.tubeRadius )
 		self.sceneObject.addSceneObject('axis_neck', naSObj)
 
 		ecPoints = self._M.epicondylarAxis.eval(np.array([-100,100])).T
-		ecSObj = scene.mlab.plot3d(ecPoints[0], ecPoints[1], ecPoints[2], name='axis_epicondylar', tube_radius=1.0 )	
+		ecSObj = scene.mlab.plot3d(ecPoints[0], ecPoints[1], ecPoints[2], name='axis_epicondylar', tube_radius=self.tubeRadius )	
 		self.sceneObject.addSceneObject('axis_epicondylar', ecSObj)
 
 	def _drawHead(self, scene):
@@ -156,7 +158,7 @@ class MayaviViewerFemurMeasurements(MayaviViewerObject):
 		self.sceneObject.addSceneObject('glyph_neckWidthPoints', NWPoints)
 
 		NWLinePoints = np.array([NWSup, NWInf]).T
-		NWLine = scene.mlab.plot3d(NWLinePoints[0], NWLinePoints[1], NWLinePoints[2], name='glyph_neckWidthLine', tube_radius=1.0 )
+		NWLine = scene.mlab.plot3d(NWLinePoints[0], NWLinePoints[1], NWLinePoints[2], name='glyph_neckWidthLine', tube_radius=self.tubeRadius )
 		self.sceneObject.addSceneObject('glyph_neckWidthLine', NWLine)
 
 		self._addText3D(scene, 'neck width', NW.value, 'mm', NWInf, [80.0,0.0,-80])
@@ -205,7 +207,7 @@ class MayaviViewerFemurMeasurements(MayaviViewerObject):
 		sTWPoints = scene.mlab.points3d( points[0], points[1], points[2], name='glyph_sTWPoints', mode='sphere', scale_factor=5, resolution=16, color=(1.0,0.0,0.0) )
 		self.sceneObject.addSceneObject('glyph_sTWPoints', sTWPoints)
 
-		sTWLine = scene.mlab.plot3d(points[0], points[1], points[2], name='glyph_sTWLine', tube_radius=1.0 )
+		sTWLine = scene.mlab.plot3d(points[0], points[1], points[2], name='glyph_sTWLine', tube_radius=self.tubeRadius )
 		self.sceneObject.addSceneObject('glyph_sTWLine', sTWLine)
 
 		self._addText3D(scene, 'subtrochanteric width', sTW.value, 'mm', sTW.p1, [100.0,0.0,-140.0])
@@ -218,7 +220,7 @@ class MayaviViewerFemurMeasurements(MayaviViewerObject):
 		mSWPoints = scene.mlab.points3d( points[0], points[1], points[2], name='glyph_midshaftWidthPoints', mode='sphere', scale_factor=5, resolution=16, color=(1.0,0.0,0.0) )
 		self.sceneObject.addSceneObject('glyph_midshaftWidthPoints', mSWPoints)
 
-		mSWLine = scene.mlab.plot3d(points[0], points[1], points[2], name='glyph_midshaftWidthLine', tube_radius=1.0 )
+		mSWLine = scene.mlab.plot3d(points[0], points[1], points[2], name='glyph_midshaftWidthLine', tube_radius=self.tubeRadius )
 		self.sceneObject.addSceneObject('glyph_midshaftWidthLine', mSWLine)
 
 		self._addText3D(scene, 'midshaft width', mSW.value, 'mm', mSW.p1, [100.0,0.0,-140.0])

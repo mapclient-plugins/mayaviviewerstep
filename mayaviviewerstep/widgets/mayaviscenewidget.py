@@ -41,9 +41,9 @@ class MayaviSceneWidget(QtGui.QWidget):
         # layout.setMargin(0)
         # layout.setSpacing(0)
         self.visualisation = Visualisation()
-        print '############'
-        print self.visualisation.__dict__
-        print '############'
+        # print '############'
+        # print self.visualisation.__dict__
+        # print '############'
 
         # If you want to debug, beware that you need to remove the Qt
         # input hook.
