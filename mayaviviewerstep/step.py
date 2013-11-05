@@ -44,7 +44,7 @@ class MayaviViewerStep(WorkflowStepMountPoint):
         super(MayaviViewerStep, self).__init__('Mayavi 3D Model Viewer', location)
         self._category = 'Visualisation'
         self._state = StepState()
-        self._icon = QtGui.QImage(':/zincmodelsource/images/zinc_model_icon.png')   # change this
+        # self._icon = QtGui.QImage(':/zincmodelsource/images/zinc_model_icon.png')   # change this
         self.addPort(('http://physiomeproject.org/workflow/1.0/rdf-schema#port',
                       'http://physiomeproject.org/workflow/1.0/rdf-schema#uses',
                       'ju#fieldworkmodeldict'))

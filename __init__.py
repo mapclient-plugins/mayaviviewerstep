@@ -29,7 +29,7 @@ if current_dir not in sys.path:
     sys.path.insert(0, current_dir)
 
 # import class that derives itself from the step mountpoint.
-import mayaviviewerstep.widgets.resources_rc
+# import mayaviviewerstep.widgets.resources_rc
 from mayaviviewerstep import step
 
 ( _, tail ) = os.path.split(current_dir)
