@@ -51,7 +51,7 @@ class MayaviViewerFemurMeasurements(MayaviViewerObject):
 	textMeasurements = ('head_diameter', 'neck_width', 'neck_shaft_angle', 'femoral_axis_length', 'subtrochanteric_width')
 	tubeRadius = 2.0
 	textLineRadius = 0.5
-	charWidth = 0.01
+	charWidth = 0.013
 	textColour = (1,1,1)
 
 	def __init__(self, name, measurements, drawWidthTubes=False, text2d=False):
@@ -185,6 +185,8 @@ class MayaviViewerFemurMeasurements(MayaviViewerObject):
 		
 		NSA = self._M.measurements['neck_shaft_angle']
 		angleDegrees = NSA.value*180.0/np.pi
+		if angleDegrees < 90.0:
+			angleDegrees = 180 - angleDegrees
 		
 		# find closest approach between shaft axis and neck axis
 		saPoints = self._M.shaftAxis.eval(np.linspace(0,300,200))
