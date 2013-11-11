@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'mayaviviewerwidget.ui'
 #
-# Created: Thu Nov  7 11:46:50 2013
+# Created: Mon Nov 11 18:02:00 2013
 #      by: pyside-uic 0.2.13 running on PySide 1.1.0
 #
 # WARNING! All changes made in this file will be lost!
@@ -59,6 +59,7 @@ class Ui_Dialog(object):
         self.tableWidget.horizontalHeader().setDefaultSectionSize(100)
         self.verticalLayout.addWidget(self.tableWidget)
         self.sliceplanegroup = QtGui.QGroupBox(self.widget1)
+        self.sliceplanegroup.setEnabled(False)
         self.sliceplanegroup.setObjectName("sliceplanegroup")
         self.horizontalLayout = QtGui.QHBoxLayout(self.sliceplanegroup)
         self.horizontalLayout.setObjectName("horizontalLayout")
