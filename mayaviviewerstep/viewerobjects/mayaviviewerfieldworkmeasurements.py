@@ -51,7 +51,7 @@ class MayaviViewerFemurMeasurements(MayaviViewerObject):
 	textMeasurements = ('head_diameter', 'neck_width', 'neck_shaft_angle', 'femoral_axis_length', 'subtrochanteric_width')
 	tubeRadius = 2.0
 	textLineRadius = 0.5
-	charWidth = 0.013
+	charWidth = 0.01
 	textColour = (1,1,1)
 
 	def __init__(self, name, measurements, drawWidthTubes=False, text2d=False):
