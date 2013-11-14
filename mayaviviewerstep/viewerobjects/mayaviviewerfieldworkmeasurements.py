@@ -105,7 +105,7 @@ class MayaviViewerFemurMeasurements(MayaviViewerObject):
 		tspacing = 0.05
 		for m in self.textMeasurements:
 			value = self._M.measurements[m].value
-			mString = '{m}: {v:5.2f}'.format(m=m, v=value)
+			mString = '{m}: {v:5.0f}'.format(m=m, v=value)
 			sObj = scene.mlab.text(tx, ty, mString, width=len(mString)*self.charWidth, name='text2d_'+m, color=self.textColour)
 			self.sceneObject.addSceneObject('text2d_'+m, sObj)
 			ty += tspacing
@@ -116,7 +116,7 @@ class MayaviViewerFemurMeasurements(MayaviViewerObject):
 
 		textOrigin = np.array(mOrigin)+np.array(offset)
 		textLine = np.array([mOrigin, textOrigin]).T
-		mStr = '{}: {:5.2f} {}'.format(name, value, unit)
+		mStr = '{}: {:5.0f} {}'.format(name, value, unit)
 		texts = scene.mlab.text(textOrigin[0], textOrigin[1], mStr, z=textOrigin[2], width=len(mStr)*self.charWidth, name='text3d_'+name, color=self.textColour)
 		self.sceneObject.addSceneObject('text3d_'+name, texts)
 		lines = scene.mlab.plot3d(textLine[0], textLine[1], textLine[2], tube_radius=self.textLineRadius, name='text3dline_'+name)
