@@ -51,7 +51,7 @@ class MayaviViewerFemurMeasurements(MayaviViewerObject):
 	textMeasurements = ('head_diameter', 'neck_width', 'neck_shaft_angle', 'femoral_axis_length', 'subtrochanteric_width')
 	tubeRadius = 2.0
 	textLineRadius = 0.5
-	charWidth = 0.01
+	charWidth = 0.015
 	textColour = (1,1,1)
 
 	def __init__(self, name, measurements, drawWidthTubes=False, text2d=False):
@@ -199,7 +199,7 @@ class MayaviViewerFemurMeasurements(MayaviViewerObject):
 		O = (closestNAPoint + closestSAPoint)*0.5
 		NSAPoint = scene.mlab.points3d( [O[0]], [O[1]], [O[2]], name='glyph_NSAPoint', mode='sphere', scale_factor=15, resolution=16, color=(1.0,0.0,0.0) )
 		self.sceneObject.addSceneObject('glyph_NSAPoint', NSAPoint)
-		self._addText3D(scene, 'neck shaft angle', angleDegrees, 'degrees', O, [100.0,0.0,-130.0])
+		self._addText3D(scene, 'neck shaft angle', angleDegrees, 'degrees', O, [100.0,0.0,-150.0])
 
 	def _drawSubTrochantericWidth(self, scene):
 		sTW = self._M.measurements['subtrochanteric_width']
@@ -212,7 +212,7 @@ class MayaviViewerFemurMeasurements(MayaviViewerObject):
 		sTWLine = scene.mlab.plot3d(points[0], points[1], points[2], name='glyph_sTWLine', tube_radius=self.tubeRadius )
 		self.sceneObject.addSceneObject('glyph_sTWLine', sTWLine)
 
-		self._addText3D(scene, 'subtrochanteric width', sTW.value, 'mm', sTW.p1, [100.0,0.0,-140.0])
+		self._addText3D(scene, 'subtrochanteric width', sTW.value, 'mm', sTW.p1, [100.0,0.0,-160.0])
 
 	def _drawMidshaftWidth(self, scene):
 		mSW = self._M.measurements['midshaft_width']

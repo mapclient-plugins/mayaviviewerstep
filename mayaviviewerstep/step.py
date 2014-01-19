@@ -29,10 +29,13 @@ import numpy as np
 from mayaviviewerstep.mayaviviewerdata import StepState
 from mayaviviewerstep.widgets.configuredialog import ConfigureDialog
 from mayaviviewerstep.widgets.mayaviviewerwidget import MayaviViewerWidget
-from mayaviviewerstep.viewerobjects.mayaviviewerobjects import MayaviViewerObjectsContainer
-from mayaviviewerstep.viewerobjects.mayaviviewerfieldworkmodel import MayaviViewerFieldworkModel
-from mayaviviewerstep.viewerobjects.mayaviviewergiasscan import MayaviViewerGiasScan
-from mayaviviewerstep.viewerobjects import mayaviviewerfieldworkmeasurements as MVFM
+
+# from mappluginutils.mayaviviewer
+from mappluginutils.mayaviviewer.mayaviviewerobjects import MayaviViewerObjectsContainer
+from mappluginutils.mayaviviewer.mayaviviewerfieldworkmodel import MayaviViewerFieldworkModel
+from mappluginutils.mayaviviewer.mayaviviewergiasscan import MayaviViewerGiasScan
+from mappluginutils.mayaviviewer.mayaviviewerdatapoints import MayaviViewerDataPoints
+from mappluginutils.mayaviviewer import mayaviviewerfieldworkmeasurements as MVFM
 
 class MayaviViewerStep(WorkflowStepMountPoint):
     '''
@@ -108,7 +111,7 @@ class MayaviViewerStep(WorkflowStepMountPoint):
             self._state._displayNodes = True
         else:
             self._state._displayNodes = False
-        self._state._renderArgs = s.value('renderargs', '')
+        self._state._renderArgs = s.value('renderargs', '{}')
         s.endGroup()
         d = ConfigureDialog(self._state)
         self._configured = d.validate()
@@ -131,6 +134,7 @@ class MayaviViewerStep(WorkflowStepMountPoint):
 
     def _addFieldworkModels(self, D):
         for name, model in D.items():
+            name = name+'#'+'FWModel'
             renderArgs = eval(self._state._renderArgs)
             obj = MayaviViewerFieldworkModel(name, model, [8,8], evaluator=None,
                                              renderArgs=renderArgs, fields=None,
@@ -139,6 +143,7 @@ class MayaviViewerStep(WorkflowStepMountPoint):
 
     def _addFieldworkMeasurements(self, D):
         for name, M in D.items():
+            name = name+'#'+'FWMeasure'
             renderArgs = eval(self._state._renderArgs)
 
             # a bit hacky yea
@@ -148,14 +153,15 @@ class MayaviViewerStep(WorkflowStepMountPoint):
                 self.objectContainer.addObject(name, obj)
         
     def _addPointClouds(self, D):
-        pass
-    #     for name, P in D.items():
-    #         renderArgs = eval(self._state._renderArgs)
-    #         obj = MayaviViewerPointCloud(name, P, renderArgs=renderArgs)
-    #         self.objectContainer.addObject(name, obj)
+        for name, P in D.items():
+            name = name+'#'+'DC'
+            renderArgs = eval(self._state._renderArgs)
+            obj = MayaviViewerDataPoints(name, P, renderArgs={'mode':'point', 'color':(0,1,0)})
+            self.objectContainer.addObject(name, obj)
  
     def _addImages(self, D):
         for name, S in D.items():
+            name = name+'#'+'IM'
             renderArgs = eval(self._state._renderArgs)
             obj = MayaviViewerGiasScan(name, S, renderArgs=renderArgs)
             self.objectContainer.addObject(name, obj)
@@ -163,10 +169,10 @@ class MayaviViewerStep(WorkflowStepMountPoint):
         
     def _addSimplemeshes(self, D):
         pass
-    #     for name, S in D.items():
-    #         renderArgs = eval(self._state._renderArgs)
-    #         obj = MayaviViewerSimpleMesh(name, model, renderArgs=renderArgs)
-    #         self.objectContainer.addObject(name, obj)
+        # for name, S in D.items():
+        #     renderArgs = eval(self._state._renderArgs)
+        #     obj = MayaviViewerSimpleMesh(name, model, renderArgs=renderArgs)
+        #     self.objectContainer.addObject(name, obj)
 
 def getConfigFilename(identifier):
     return identifier + '.conf'

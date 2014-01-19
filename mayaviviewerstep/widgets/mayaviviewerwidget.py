@@ -28,7 +28,7 @@ from traits.api import HasTraits, Instance, on_trait_change, \
     Int, Dict
 
 # from mayaviviewerobjects import colours, MayaviViewerObjectsContainer
-from mayaviviewerstep.viewerobjects.mayaviviewerobjects import colours, MayaviViewerObjectsContainer
+from mappluginutils.mayaviviewer.mayaviviewerobjects import colours, MayaviViewerObjectsContainer
 
 class MayaviViewerWidget(QDialog):
     '''
@@ -90,6 +90,7 @@ class MayaviViewerWidget(QDialog):
             obj = self._objects.getObject(name)
             self._addObjectToTable(row, name, obj)
             row += 1
+            print row, name
 
         self._ui.tableWidget.resizeColumnToContents(self.objectTableHeaderColumns['visible'])
         self._ui.tableWidget.resizeColumnToContents(self.objectTableHeaderColumns['type'])
