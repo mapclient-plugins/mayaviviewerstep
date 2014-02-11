@@ -39,8 +39,7 @@ from mappluginutils.mayaviviewer import mayaviviewerfieldworkmeasurements as MVF
 
 class MayaviViewerStep(WorkflowStepMountPoint):
     '''
-    fieldvi view model step displays a given fieldwork model 
-    using the fieldvi widget
+    Step for displaying 3D objects using mayavi.
     '''
     
     def __init__(self, location):
