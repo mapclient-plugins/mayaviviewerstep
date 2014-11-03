@@ -23,12 +23,12 @@ import random
 import string
 from PySide import QtCore, QtGui
 
-from mountpoints.workflowstep import WorkflowStepMountPoint
+from mapclient.mountpoints.workflowstep import WorkflowStepMountPoint
 
 import numpy as np
-from mayaviviewerstep.mayaviviewerdata import StepState
-from mayaviviewerstep.widgets.configuredialog import ConfigureDialog
-from mayaviviewerstep.widgets.mayaviviewerwidget import MayaviViewerWidget
+from mapclientplugins.mayaviviewerstep.mayaviviewerdata import StepState
+from mapclientplugins.mayaviviewerstep.widgets.configuredialog import ConfigureDialog
+from mapclientplugins.mayaviviewerstep.widgets.mayaviviewerwidget import MayaviViewerWidget
 
 # from mappluginutils.mayaviviewer
 from mappluginutils.mayaviviewer.mayaviviewerobjects import MayaviViewerObjectsContainer

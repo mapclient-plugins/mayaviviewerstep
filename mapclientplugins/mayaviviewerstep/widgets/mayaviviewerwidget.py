@@ -23,7 +23,7 @@ os.environ['ETS_TOOLKIT'] = 'qt4'
 from PySide.QtGui import QDialog, QFileDialog, QDialogButtonBox, QAbstractItemView, QTableWidgetItem
 from PySide.QtCore import Qt
 
-from mayaviviewerstep.widgets.ui_mayaviviewerwidget import Ui_Dialog
+from mapclientplugins.mayaviviewerstep.widgets.ui_mayaviviewerwidget import Ui_Dialog
 from traits.api import HasTraits, Instance, on_trait_change, \
     Int, Dict
 

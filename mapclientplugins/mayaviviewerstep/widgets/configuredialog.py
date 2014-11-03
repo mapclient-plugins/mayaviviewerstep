@@ -21,8 +21,8 @@ import os
 
 from PySide.QtGui import QDialog, QFileDialog, QDialogButtonBox
 
-from mayaviviewerstep.widgets.ui_configuredialog import Ui_ConfigureDialog
-from mayaviviewerstep.mayaviviewerdata import StepState
+from mapclientplugins.mayaviviewerstep.widgets.ui_configuredialog import Ui_ConfigureDialog
+from mapclientplugins.mayaviviewerstep.mayaviviewerdata import StepState
 
 REQUIRED_STYLE_SHEET = 'border: 1px solid red; border-radius: 3px'
 DEFAULT_STYLE_SHEET = ''
