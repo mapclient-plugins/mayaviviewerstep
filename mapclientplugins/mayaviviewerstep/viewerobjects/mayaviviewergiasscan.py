@@ -18,7 +18,7 @@ This file is part of MAP Client. (http://launchpad.net/mapclient)
     along with MAP Client.  If not, see <http://www.gnu.org/licenses/>..
 '''
 
-from mayaviviewerobjects import MayaviViewerSceneObject, MayaviViewerObject, colours
+from .mayaviviewerobjects import MayaviViewerSceneObject, MayaviViewerObject, colours
 import numpy as np
 from mayavi import mlab
 
@@ -61,11 +61,11 @@ class MayaviViewerGiasScan(MayaviViewerObject):
             self.renderArgs = {'vmin':self._vmin, 'vmax':self._vmax}
         else:
             self.renderArgs = renderArgs
-            if 'vmax' not in self.renderArgs.keys():
+            if 'vmax' not in list(self.renderArgs.keys()):
                 self.renderArgs['vmax'] = self._vmax
-            if 'vmin' not in self.renderArgs.keys():
+            if 'vmin' not in list(self.renderArgs.keys()):
                 self.renderArgs['vmin'] = self._vmin
-            if 'colormap' not in self.renderArgs.keys():
+            if 'colormap' not in list(self.renderArgs.keys()):
                 self.renderArgs['colormap'] = self._colourMap
 
     def setScalarSelection(self, fieldName):
@@ -85,7 +85,7 @@ class MayaviViewerGiasScan(MayaviViewerObject):
         try:
             I = self.scan.I
         except AttributeError:
-            print 'scan is None:', self.name
+            print('scan is None:', self.name)
 
         ISrc = mlab.pipeline.scalar_field(I, colormap=self.renderArgs['colormap'])
         slicerWidget = scene.mlab.pipeline.image_plane_widget(ISrc,

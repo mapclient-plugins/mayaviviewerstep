@@ -118,12 +118,12 @@ class MayaviViewerStep(WorkflowStepMountPoint):
  
     def setPortData(self, index, dataIn):
         if not isinstance(dataIn, dict):
-            raise TypeError, 'mayaviviewerstep expects a dictionary as input'
+            raise TypeError('mayaviviewerstep expects a dictionary as input')
 
         self._addObjectMethods[index](dataIn)
 
     def execute(self):
-        print 'launching MayaviViewerStep'
+        print('launching MayaviViewerStep')
         # if not self._widget:
         self._widget = MayaviViewerWidget(self.objectContainer)
         self._widget._ui.closeButton.clicked.connect(self._doneExecution)
@@ -132,7 +132,7 @@ class MayaviViewerStep(WorkflowStepMountPoint):
         self._setCurrentWidget(self._widget)
 
     def _addFieldworkModels(self, D):
-        for name, model in D.items():
+        for name, model in list(D.items()):
             name = name+'#'+'FWModel'
             renderArgs = eval(self._state._renderArgs)
             obj = MayaviViewerFieldworkModel(name, model, [8,8], evaluator=None,
@@ -141,25 +141,25 @@ class MayaviViewerStep(WorkflowStepMountPoint):
             self.objectContainer.addObject(name, obj)
 
     def _addFieldworkMeasurements(self, D):
-        for name, M in D.items():
+        for name, M in list(D.items()):
             name = name+'#'+'FWMeasure'
             renderArgs = eval(self._state._renderArgs)
 
             # a bit hacky yea
             if 'femur' in name.lower():
-                print 'ADDING MEASUREMENT', name
+                print('ADDING MEASUREMENT', name)
                 obj = MVFM.MayaviViewerFemurMeasurements(name, M)
                 self.objectContainer.addObject(name, obj)
         
     def _addPointClouds(self, D):
-        for name, P in D.items():
+        for name, P in list(D.items()):
             name = name+'#'+'DC'
             renderArgs = eval(self._state._renderArgs)
             obj = MayaviViewerDataPoints(name, P, renderArgs={'mode':'point', 'color':(0,1,0)})
             self.objectContainer.addObject(name, obj)
  
     def _addImages(self, D):
-        for name, S in D.items():
+        for name, S in list(D.items()):
             name = name+'#'+'IM'
             renderArgs = eval(self._state._renderArgs)
             obj = MayaviViewerGiasScan(name, S, renderArgs=renderArgs)

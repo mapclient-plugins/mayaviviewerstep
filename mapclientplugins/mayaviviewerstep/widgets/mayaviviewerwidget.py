@@ -57,7 +57,7 @@ class MayaviViewerWidget(QDialog):
         if isinstance(viewerObjects, MayaviViewerObjectsContainer):
             self._objects = viewerObjects       # models, point clouds, tri-mesh, measurements etc to be rendered {name:(type, object)}
         else:
-            raise TypeError, 'viewerObject must be a MayaviViewerObjects instance'
+            raise TypeError('viewerObject must be a MayaviViewerObjects instance')
 
         self._makeConnections()
         self._initialiseObjectTable()
@@ -90,15 +90,15 @@ class MayaviViewerWidget(QDialog):
             obj = self._objects.getObject(name)
             self._addObjectToTable(row, name, obj)
             row += 1
-            print row, name
+            print(row, name)
 
         self._ui.tableWidget.resizeColumnToContents(self.objectTableHeaderColumns['visible'])
         self._ui.tableWidget.resizeColumnToContents(self.objectTableHeaderColumns['type'])
 
     def _addObjectToTable(self, row, name, obj):
         typeName = obj.typeName
-        print typeName
-        print name
+        print(typeName)
+        print(name)
         tableItem = QTableWidgetItem(name)
         tableItem.setCheckState(Qt.Checked)
         self._ui.tableWidget.setItem(row, self.objectTableHeaderColumns['visible'], tableItem)
@@ -108,8 +108,8 @@ class MayaviViewerWidget(QDialog):
         selectedRow = self._ui.tableWidget.currentRow()
         self.selectedObjectName = self._ui.tableWidget.item(selectedRow, self.objectTableHeaderColumns['visible']).text()
         self._populateScalarsDropDown(self.selectedObjectName)
-        print selectedRow
-        print self.selectedObjectName
+        print(selectedRow)
+        print(self.selectedObjectName)
 
         obj = self._objects.getObject(self.selectedObjectName)
         # enable/disable image plane toggles if gias scan is selected
@@ -133,17 +133,17 @@ class MayaviViewerWidget(QDialog):
             name = tableItem.text()
             visible = tableItem.checkState().name=='Checked'
 
-            print 'visibleboxchanged name', name
-            print 'visibleboxchanged visible', visible
+            print('visibleboxchanged name', name)
+            print('visibleboxchanged visible', visible)
 
             # toggle visibility
             obj = self._objects.getObject(name)
-            print obj.name
+            print(obj.name)
             if obj.sceneObject:
-                print 'changing existing visibility'
+                print('changing existing visibility')
                 obj.setVisibility(visible)
             else:
-                print 'drawing new'
+                print('drawing new')
                 obj.draw(self._scene)
 
     def _populateScalarsDropDown(self, objectName):
@@ -175,17 +175,17 @@ class MayaviViewerWidget(QDialog):
         #     self._ui.tableWidget.removeRow(r)
 
     def _refresh(self):
-        for r in xrange(self._ui.tableWidget.rowCount()):
+        for r in range(self._ui.tableWidget.rowCount()):
             tableItem = self._ui.tableWidget.item(r, self.objectTableHeaderColumns['visible'])
             name = tableItem.text()
             visible = tableItem.checkState().name=='Checked'
             obj = self._objects.getObject(name)
-            print obj.name
+            print(obj.name)
             if obj.sceneObject:
-                print 'changing existing visibility'
+                print('changing existing visibility')
                 obj.setVisibility(visible)
             else:
-                print 'drawing new'
+                print('drawing new')
                 obj.draw(self._scene)
 
     def _saveScreenShot(self):
@@ -219,7 +219,7 @@ class MayaviViewerWidget(QDialog):
         # This function is called when the view is opened. We don't
         # populate the scene when the view is not yet open, as some
         # VTK features require a GLContext.
-        print 'trait_changed'
+        print('trait_changed')
 
         # We can do normal mlab calls on the embedded scene.
         self._scene.mlab.test_points3d()

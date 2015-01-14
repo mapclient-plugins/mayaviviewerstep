@@ -19,4 +19,7 @@ This file is part of MAP Client. (http://launchpad.net/mapclient)
 """
 __version__ = '0.1.0'
 __author__ = 'Ju Zhang'
+__stepname__ = 'Mayavi 3D Model Viewer'
+__location__ = 'https://github.com/mapclient-plugins/mayaviviewerstep/archive/master.zip'
+
 from mapclientplugins.mayaviviewerstep import step

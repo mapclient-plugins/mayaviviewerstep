@@ -191,4 +191,4 @@ class Ui_Dialog(object):
         self.screenshotSaveButton.setText(QtGui.QApplication.translate("Dialog", "Save Screenshot", None, QtGui.QApplication.UnicodeUTF8))
         self.closeButton.setText(QtGui.QApplication.translate("Dialog", "Close", None, QtGui.QApplication.UnicodeUTF8))
 
-from mayaviscenewidget import MayaviSceneWidget
+from .mayaviscenewidget import MayaviSceneWidget
