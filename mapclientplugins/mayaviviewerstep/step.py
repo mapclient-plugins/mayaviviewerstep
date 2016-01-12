@@ -18,10 +18,11 @@ This file is part of MAP Client. (http://launchpad.net/mapclient)
     along with MAP Client.  If not, see <http://www.gnu.org/licenses/>..
 '''
 import os
+import json
 os.environ['ETS_TOOLKIT'] = 'qt4'
 import random
 import string
-from PySide import QtCore, QtGui
+from PySide import QtGui
 
 from mapclient.mountpoints.workflowstep import WorkflowStepMountPoint
 
@@ -89,32 +90,38 @@ class MayaviViewerStep(WorkflowStepMountPoint):
      
     def setIdentifier(self, identifier):
         self._state._identifier = identifier
-     
-    def serialize(self, location):
-        configuration_file = os.path.join(location, getConfigFilename(self._state._identifier))
-        s = QtCore.QSettings(configuration_file, QtCore.QSettings.IniFormat)
-        s.beginGroup('state')
-        s.setValue('identifier', self._state._identifier)
-        s.setValue('discretisation', self._state._discretisation)
-        s.setValue('displaynodes', self._state._displayNodes)
-        s.setValue('renderargs', self._state._renderArgs)
-        s.endGroup()
-     
-    def deserialize(self, location):
-        configuration_file = os.path.join(location, getConfigFilename(self._state._identifier))
-        s = QtCore.QSettings(configuration_file, QtCore.QSettings.IniFormat)
-        s.beginGroup('state')
-        self._state._identifier = s.value('identifier', '')
-        self._state._discretisation = s.value('discretisation', '')
-        if s.value('displaynodes', '')=='True':
+
+    def serialize(self):
+        '''
+        Add code to serialize this step to disk. Returns a json string for
+        mapclient to serialise.
+        '''
+        config = {'identifier':self._state._identifier,
+                  'discretisation':self._state._discretisation,
+                  'displaynodes':self._state._displayNodes,
+                  'renderargs':self._state._renderArgs,
+                    }
+        return json.dumps(config, default=lambda o: o.__dict__, sort_keys=True, indent=4)
+
+    def deserialize(self, string):
+        '''
+        Add code to deserialize this step from disk. Parses a json string
+        given by mapclient
+        '''
+        config = json.loads(string)
+
+        self._state._identifier = config['identifier']
+        self._state._discretisation = config['discretisation']
+        self._state._displayNodes = config['displaynodes']
+        self._state._renderArgs = config['renderargs']
+
+        if self._state._displayNodes=='True':
             self._state._displayNodes = True
-        else:
+        elif self._state._displayNodes=='False':
             self._state._displayNodes = False
-        self._state._renderArgs = s.value('renderargs', '{}')
-        s.endGroup()
+
         d = ConfigureDialog(self._state)
         self._configured = d.validate()
-        pass
  
     def setPortData(self, index, dataIn):
         if not isinstance(dataIn, dict):
