@@ -32,11 +32,11 @@ from mapclientplugins.mayaviviewerstep.widgets.configuredialog import ConfigureD
 from mapclientplugins.mayaviviewerstep.widgets.mayaviviewerwidget import MayaviViewerWidget
 
 # from mappluginutils.mayaviviewer
-from mappluginutils.mayaviviewer.mayaviviewerobjects import MayaviViewerObjectsContainer
-from mappluginutils.mayaviviewer.mayaviviewerfieldworkmodel import MayaviViewerFieldworkModel
-from mappluginutils.mayaviviewer.mayaviviewergiasscan import MayaviViewerGiasScan
-from mappluginutils.mayaviviewer.mayaviviewerdatapoints import MayaviViewerDataPoints
-from mappluginutils.mayaviviewer import mayaviviewerfieldworkmeasurements as MVFM
+from gias2.mappluginutils.mayaviviewer.mayaviviewerobjects import MayaviViewerObjectsContainer
+from gias2.mappluginutils.mayaviviewer.mayaviviewerfieldworkmodel import MayaviViewerFieldworkModel
+from gias2.mappluginutils.mayaviviewer.mayaviviewergiasscan import MayaviViewerGiasScan
+from gias2.mappluginutils.mayaviviewer.mayaviviewerdatapoints import MayaviViewerDataPoints
+from gias2.mappluginutils.mayaviviewer import mayaviviewerfieldworkmeasurements as MVFM
 
 class MayaviViewerStep(WorkflowStepMountPoint):
     '''
