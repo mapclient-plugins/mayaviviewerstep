@@ -56,7 +56,7 @@ class MayaviViewerStep(WorkflowStepMountPoint):
                       'ju#fieldworkmeasurementdict'))
         self.addPort(('http://physiomeproject.org/workflow/1.0/rdf-schema#port',
                       'http://physiomeproject.org/workflow/1.0/rdf-schema#uses',
-                      'http://physiomeproject.org/workflow/1.0/rdf-schema#pointcloud'))
+                      'http://physiomeproject.org/workflow/1.0/rdf-schema#pointclouddict'))
         self.addPort(('http://physiomeproject.org/workflow/1.0/rdf-schema#port',
                       'http://physiomeproject.org/workflow/1.0/rdf-schema#uses',
                       'ju#giasscandict'))

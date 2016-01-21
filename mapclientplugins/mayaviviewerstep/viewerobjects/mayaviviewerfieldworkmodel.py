@@ -20,7 +20,7 @@ This file is part of MAP Client. (http://launchpad.net/mapclient)
 
 from .mayaviviewerobjects import MayaviViewerSceneObject, MayaviViewerObject, colours
 import numpy as np
-from fieldwork.field import geometric_field
+from gias2.fieldwork.field import geometric_field
 
 class MayaviViewerFieldworkModelSceneObject(MayaviViewerSceneObject):
 
