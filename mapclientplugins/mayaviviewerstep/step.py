@@ -79,7 +79,7 @@ class MayaviViewerStep(WorkflowStepMountPoint):
         d.setModal(True)
         if d.exec_():
             self._state = d.getState()
-            self.serialize(self._location)
+            self.serialize()
             
         self._configured = d.validate()
         if self._configured and self._configuredObserver:
