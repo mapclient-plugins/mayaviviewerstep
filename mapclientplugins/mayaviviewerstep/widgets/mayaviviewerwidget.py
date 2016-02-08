@@ -28,7 +28,7 @@ from traits.api import HasTraits, Instance, on_trait_change, \
     Int, Dict
 
 # from mayaviviewerobjects import colours, MayaviViewerObjectsContainer
-from mappluginutils.mayaviviewer.mayaviviewerobjects import colours, MayaviViewerObjectsContainer
+from gias2.mappluginutils.mayaviviewer.mayaviviewerobjects import MayaviViewerObjectsContainer, colours
 
 class MayaviViewerWidget(QDialog):
     '''
