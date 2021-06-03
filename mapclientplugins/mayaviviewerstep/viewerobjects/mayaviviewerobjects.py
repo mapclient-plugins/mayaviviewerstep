@@ -18,9 +18,11 @@ This file is part of MAP Client. (http://launchpad.net/mapclient)
     along with MAP Client.  If not, see <http://www.gnu.org/licenses/>..
 '''
 import os
+
 os.environ['ETS_TOOLKIT'] = 'qt4'
 
-colours = {'bone':(0.84705882, 0.8, 0.49803922)}
+colours = {'bone': (0.84705882, 0.8, 0.49803922)}
+
 
 class MayaviViewerObject(object):
 
@@ -51,10 +53,12 @@ class MayaviViewerSceneObject(object):
     def __init__(self):
         pass
 
+
 class MayaviViewerObjectsContainer(object):
     """
     stores objects to be rendered in the viewer
     """
+
     def __init__(self):
         self._objects = {}
 
@@ -79,7 +83,7 @@ class MayaviViewerObjectsContainer(object):
     def getObjectNamesOfType(self, typeName):
         ret = []
         for name, o in list(self._objects.items()):
-            if o.typeName==t:
+            if o.typeName == t:
                 ret.append(name)
 
         return ret

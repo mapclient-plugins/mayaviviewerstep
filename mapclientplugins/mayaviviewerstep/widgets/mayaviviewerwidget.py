@@ -18,6 +18,7 @@ This file is part of MAP Client. (http://launchpad.net/mapclient)
     along with MAP Client.  If not, see <http://www.gnu.org/licenses/>..
 '''
 import os
+
 os.environ['ETS_TOOLKIT'] = 'qt4'
 
 from PySide2.QtWidgets import QDialog, QAbstractItemView, QTableWidgetItem
@@ -30,17 +31,18 @@ from traits.api import HasTraits, Instance, on_trait_change, \
 # from mayaviviewerobjects import colours, MayaviViewerObjectsContainer
 from gias2.mappluginutils.mayaviviewer.mayaviviewerobjects import MayaviViewerObjectsContainer, colours
 
+
 class MayaviViewerWidget(QDialog):
     '''
     Configure dialog to present the user with the options to configure this step.
     '''
 
-    GFD = [10,10]
+    GFD = [10, 10]
     displayGFNodes = True
     defaultColor = colours['bone']
-    objectTableHeaderColumns = {'visible':0, 'type':1}
+    objectTableHeaderColumns = {'visible': 0, 'type': 1}
     mergeGFVertices = False
-    backgroundColour = (0.0,0.0,0.0)
+    backgroundColour = (0.0, 0.0, 0.0)
 
     def __init__(self, viewerObjects, parent=None):
         '''
@@ -55,7 +57,7 @@ class MayaviViewerWidget(QDialog):
         self._scene.background = self.backgroundColour
 
         if isinstance(viewerObjects, MayaviViewerObjectsContainer):
-            self._objects = viewerObjects       # models, point clouds, tri-mesh, measurements etc to be rendered {name:(type, object)}
+            self._objects = viewerObjects  # models, point clouds, tri-mesh, measurements etc to be rendered {name:(type, object)}
         else:
             raise TypeError('viewerObject must be a MayaviViewerObjects instance')
 
@@ -84,7 +86,7 @@ class MayaviViewerWidget(QDialog):
         self._ui.tableWidget.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self._ui.tableWidget.setSelectionBehavior(QAbstractItemView.SelectRows)
         self._ui.tableWidget.setSelectionMode(QAbstractItemView.SingleSelection)
-        
+
         row = 0
         for name in self._objects.getObjectNames():
             obj = self._objects.getObject(name)
@@ -106,14 +108,15 @@ class MayaviViewerWidget(QDialog):
 
     def _tableItemClicked(self):
         selectedRow = self._ui.tableWidget.currentRow()
-        self.selectedObjectName = self._ui.tableWidget.item(selectedRow, self.objectTableHeaderColumns['visible']).text()
+        self.selectedObjectName = self._ui.tableWidget.item(selectedRow,
+                                                            self.objectTableHeaderColumns['visible']).text()
         self._populateScalarsDropDown(self.selectedObjectName)
         print(selectedRow)
         print(self.selectedObjectName)
 
         obj = self._objects.getObject(self.selectedObjectName)
         # enable/disable image plane toggles if gias scan is selected
-        if obj.typeName=='giasscan':
+        if obj.typeName == 'giasscan':
             self._ui.slicePlaneRadioX.setEnabled(True)
             self._ui.slicePlaneRadioY.setEnabled(True)
             self._ui.slicePlaneRadioZ.setEnabled(True)
@@ -122,16 +125,15 @@ class MayaviViewerWidget(QDialog):
             self._ui.slicePlaneRadioY.setEnabled(False)
             self._ui.slicePlaneRadioZ.setEnabled(False)
 
-
     def _visibleBoxChanged(self, tableItem):
         # get name of object selected
         # name = self._getSelectedObjectName()
 
         # checked changed item is actually the checkbox
-        if tableItem.column()==self.objectTableHeaderColumns['visible']:
+        if tableItem.column() == self.objectTableHeaderColumns['visible']:
             # get visible status
             name = tableItem.text()
-            visible = tableItem.checkState().name=='Checked'
+            visible = tableItem.checkState().name == 'Checked'
 
             print('visibleboxchanged name', name)
             print('visibleboxchanged visible', visible)
@@ -178,7 +180,7 @@ class MayaviViewerWidget(QDialog):
         for r in range(self._ui.tableWidget.rowCount()):
             tableItem = self._ui.tableWidget.item(r, self.objectTableHeaderColumns['visible'])
             name = tableItem.text()
-            visible = tableItem.checkState().name=='Checked'
+            visible = tableItem.checkState().name == 'Checked'
             obj = self._objects.getObject(name)
             print(obj.name)
             if obj.sceneObject:
@@ -192,7 +194,7 @@ class MayaviViewerWidget(QDialog):
         filename = self._ui.screenshotFilenameLineEdit.text()
         width = int(self._ui.screenshotPixelXLineEdit.text())
         height = int(self._ui.screenshotPixelYLineEdit.text())
-        self._scene.mlab.savefig( filename, size=( width, height ) )
+        self._scene.mlab.savefig(filename, size=(width, height))
 
     def _slicePlaneXToggled(self, checked):
         name = self._getSelectedObjectName()
@@ -212,8 +214,7 @@ class MayaviViewerWidget(QDialog):
         if checked:
             obj.changeSlicePlane('z_axes')
 
-
-    #================================================================#
+    # ================================================================#
     @on_trait_change('scene.activated')
     def testPlot(self):
         # This function is called when the view is opened. We don't
@@ -224,7 +225,5 @@ class MayaviViewerWidget(QDialog):
         # We can do normal mlab calls on the embedded scene.
         self._scene.mlab.test_points3d()
 
-
     # def _saveImage_fired( self ):
     #     self.scene.mlab.savefig( str(self.saveImageFilename), size=( int(self.saveImageWidth), int(self.saveImageLength) ) )
-        
