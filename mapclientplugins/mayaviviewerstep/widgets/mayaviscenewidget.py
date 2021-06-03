@@ -2,7 +2,6 @@ import os
 os.environ['ETS_TOOLKIT'] = 'qt4'
 
 from pyface.qt import QtGui, QtCore
-# from PySide import QtGui, QtCore
 
 from traits.api import HasTraits, Instance, on_trait_change, \
     Int, Dict

@@ -20,8 +20,8 @@ This file is part of MAP Client. (http://launchpad.net/mapclient)
 import os
 os.environ['ETS_TOOLKIT'] = 'qt4'
 
-from PySide.QtGui import QDialog, QFileDialog, QDialogButtonBox, QAbstractItemView, QTableWidgetItem
-from PySide.QtCore import Qt
+from PySide2.QtWidgets import QDialog, QAbstractItemView, QTableWidgetItem
+from PySide2.QtCore import Qt
 
 from mapclientplugins.mayaviviewerstep.widgets.ui_mayaviviewerwidget import Ui_Dialog
 from traits.api import HasTraits, Instance, on_trait_change, \

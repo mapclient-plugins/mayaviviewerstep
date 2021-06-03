@@ -19,7 +19,7 @@ This file is part of MAP Client. (http://launchpad.net/mapclient)
 '''
 import os
 
-from PySide.QtGui import QDialog, QFileDialog, QDialogButtonBox
+from PySide2.QtWidgets import QDialog, QDialogButtonBox
 
 from mapclientplugins.mayaviviewerstep.widgets.ui_configuredialog import Ui_ConfigureDialog
 from mapclientplugins.mayaviviewerstep.mayaviviewerdata import StepState

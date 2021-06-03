@@ -22,7 +22,6 @@ import json
 os.environ['ETS_TOOLKIT'] = 'qt4'
 import random
 import string
-from PySide import QtGui
 
 from mapclient.mountpoints.workflowstep import WorkflowStepMountPoint
 
