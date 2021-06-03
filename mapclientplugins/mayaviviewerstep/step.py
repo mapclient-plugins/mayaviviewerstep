@@ -74,7 +74,7 @@ class MayaviViewerStep(WorkflowStepMountPoint):
         self.objectContainer = MayaviViewerObjectsContainer()
 
     def configure(self):
-        d = ConfigureDialog(self._state)
+        d = ConfigureDialog(self._main_window)
         d.setModal(True)
         if d.exec_():
             self._state = d.getState()
@@ -119,7 +119,7 @@ class MayaviViewerStep(WorkflowStepMountPoint):
         elif self._state._displayNodes=='False':
             self._state._displayNodes = False
 
-        d = ConfigureDialog(self._state)
+        d = ConfigureDialog(self._main_window)
         self._configured = d.validate()
  
     def setPortData(self, index, dataIn):
