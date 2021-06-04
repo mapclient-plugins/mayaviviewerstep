@@ -20,7 +20,7 @@ This file is part of MAP Client. (http://launchpad.net/mapclient)
 import os
 import json
 
-os.environ['ETS_TOOLKIT'] = 'qt4'
+os.environ['ETS_TOOLKIT'] = 'qt5'
 import random
 import string
 
@@ -121,7 +121,7 @@ class MayaviViewerStep(WorkflowStepMountPoint):
         elif self._state._displayNodes == 'False':
             self._state._displayNodes = False
 
-        d = ConfigureDialog(self._main_window)
+        d = ConfigureDialog()
         self._configured = d.validate()
 
     def setPortData(self, index, dataIn):
