@@ -22,8 +22,8 @@ from .mayaviviewerobjects import MayaviViewerSceneObject, MayaviViewerObject, co
 import numpy as np
 from mayavi import mlab
 
-class MayaviViewerGiasScanSceneObject(MayaviViewerSceneObject):
 
+class MayaviViewerGiasScanSceneObject(MayaviViewerSceneObject):
     typeName = 'giasscan'
 
     def __init__(self, name, slicerWidget, ISrc):
@@ -44,8 +44,8 @@ class MayaviViewerGiasScanSceneObject(MayaviViewerSceneObject):
             self.ISrc.remove()
             self.ISrc = None
 
-class MayaviViewerGiasScan(MayaviViewerObject):
 
+class MayaviViewerGiasScan(MayaviViewerObject):
     typeName = 'giasscan'
     _vmax = 1800
     _vmin = -200
@@ -57,8 +57,8 @@ class MayaviViewerGiasScan(MayaviViewerObject):
         self.scan = scan
         self.sceneObject = None
 
-        if renderArgs==None:
-            self.renderArgs = {'vmin':self._vmin, 'vmax':self._vmax}
+        if renderArgs == None:
+            self.renderArgs = {'vmin': self._vmin, 'vmax': self._vmax}
         else:
             self.renderArgs = renderArgs
             if 'vmax' not in list(self.renderArgs.keys()):
@@ -81,7 +81,7 @@ class MayaviViewerGiasScan(MayaviViewerObject):
 
     def draw(self, scene):
         scene.disable_render = True
-        
+
         try:
             I = self.scan.I
         except AttributeError:
@@ -89,10 +89,10 @@ class MayaviViewerGiasScan(MayaviViewerObject):
 
         ISrc = mlab.pipeline.scalar_field(I, colormap=self.renderArgs['colormap'])
         slicerWidget = scene.mlab.pipeline.image_plane_widget(ISrc,
-                                                            plane_orientation=self._slicePlane,
-                                                            slice_index=0,
-                                                            **self.renderArgs
-                                                            )
+                                                              plane_orientation=self._slicePlane,
+                                                              slice_index=0,
+                                                              **self.renderArgs
+                                                              )
         mlab.outline()
         self.sceneObject = MayaviViewerGiasScanSceneObject(self.name, slicerWidget, ISrc)
         scene.disable_render = False

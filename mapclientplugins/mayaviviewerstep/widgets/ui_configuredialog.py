@@ -1,74 +1,108 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'configuredialog.ui'
-#
-# Created: Thu Oct 24 14:38:01 2013
-#      by: pyside-uic 0.2.13 running on PySide 1.1.0
-#
-# WARNING! All changes made in this file will be lost!
+################################################################################
+## Form generated from reading UI file 'configuredialog.ui'
+##
+## Created by: Qt User Interface Compiler version 5.15.2
+##
+## WARNING! All changes made in this file will be lost when recompiling UI file!
+################################################################################
 
-from PySide import QtCore, QtGui
+from PySide2.QtCore import *
+from PySide2.QtGui import *
+from PySide2.QtWidgets import *
+
 
 class Ui_ConfigureDialog(object):
     def setupUi(self, ConfigureDialog):
-        ConfigureDialog.setObjectName("ConfigureDialog")
+        if not ConfigureDialog.objectName():
+            ConfigureDialog.setObjectName(u"ConfigureDialog")
         ConfigureDialog.resize(593, 253)
-        self.verticalLayout_2 = QtGui.QVBoxLayout(ConfigureDialog)
-        self.verticalLayout_2.setObjectName("verticalLayout_2")
-        self.groupBox = QtGui.QGroupBox(ConfigureDialog)
-        self.groupBox.setTitle("")
-        self.groupBox.setObjectName("groupBox")
-        self.gridLayout = QtGui.QGridLayout(self.groupBox)
-        self.gridLayout.setObjectName("gridLayout")
-        self.renderArgsLineEdit = QtGui.QLineEdit(self.groupBox)
-        self.renderArgsLineEdit.setObjectName("renderArgsLineEdit")
+        self.verticalLayout_2 = QVBoxLayout(ConfigureDialog)
+        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
+        self.groupBox = QGroupBox(ConfigureDialog)
+        self.groupBox.setObjectName(u"groupBox")
+        self.gridLayout = QGridLayout(self.groupBox)
+        self.gridLayout.setObjectName(u"gridLayout")
+        self.renderArgsLineEdit = QLineEdit(self.groupBox)
+        self.renderArgsLineEdit.setObjectName(u"renderArgsLineEdit")
+
         self.gridLayout.addWidget(self.renderArgsLineEdit, 3, 1, 1, 1)
-        self.renderArgsLabel = QtGui.QLabel(self.groupBox)
-        self.renderArgsLabel.setObjectName("renderArgsLabel")
+
+        self.renderArgsLabel = QLabel(self.groupBox)
+        self.renderArgsLabel.setObjectName(u"renderArgsLabel")
+
         self.gridLayout.addWidget(self.renderArgsLabel, 3, 0, 1, 1)
-        self.identifierLineEdit = QtGui.QLineEdit(self.groupBox)
-        self.identifierLineEdit.setObjectName("identifierLineEdit")
+
+        self.identifierLineEdit = QLineEdit(self.groupBox)
+        self.identifierLineEdit.setObjectName(u"identifierLineEdit")
+
         self.gridLayout.addWidget(self.identifierLineEdit, 0, 1, 1, 1)
-        self.discretisationLabel = QtGui.QLabel(self.groupBox)
-        self.discretisationLabel.setMinimumSize(QtCore.QSize(71, 0))
-        self.discretisationLabel.setToolTip("")
-        self.discretisationLabel.setObjectName("discretisationLabel")
+
+        self.discretisationLabel = QLabel(self.groupBox)
+        self.discretisationLabel.setObjectName(u"discretisationLabel")
+        self.discretisationLabel.setMinimumSize(QSize(71, 0))
+
         self.gridLayout.addWidget(self.discretisationLabel, 1, 0, 1, 1)
-        self.displayNodeLabel = QtGui.QLabel(self.groupBox)
-        self.displayNodeLabel.setMinimumSize(QtCore.QSize(71, 0))
-        self.displayNodeLabel.setObjectName("displayNodeLabel")
+
+        self.displayNodeLabel = QLabel(self.groupBox)
+        self.displayNodeLabel.setObjectName(u"displayNodeLabel")
+        self.displayNodeLabel.setMinimumSize(QSize(71, 0))
+
         self.gridLayout.addWidget(self.displayNodeLabel, 2, 0, 1, 1)
-        self.identifierLabel = QtGui.QLabel(self.groupBox)
-        self.identifierLabel.setObjectName("identifierLabel")
+
+        self.identifierLabel = QLabel(self.groupBox)
+        self.identifierLabel.setObjectName(u"identifierLabel")
+
         self.gridLayout.addWidget(self.identifierLabel, 0, 0, 1, 1)
-        spacerItem = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
-        self.gridLayout.addItem(spacerItem, 4, 1, 1, 1)
-        self.displayNodesCheckBox = QtGui.QCheckBox(self.groupBox)
-        self.displayNodesCheckBox.setText("")
-        self.displayNodesCheckBox.setObjectName("displayNodesCheckBox")
+
+        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+
+        self.gridLayout.addItem(self.verticalSpacer, 4, 1, 1, 1)
+
+        self.displayNodesCheckBox = QCheckBox(self.groupBox)
+        self.displayNodesCheckBox.setObjectName(u"displayNodesCheckBox")
+
         self.gridLayout.addWidget(self.displayNodesCheckBox, 2, 1, 1, 1)
-        self.discretisationLineEdit = QtGui.QLineEdit(self.groupBox)
-        self.discretisationLineEdit.setObjectName("discretisationLineEdit")
+
+        self.discretisationLineEdit = QLineEdit(self.groupBox)
+        self.discretisationLineEdit.setObjectName(u"discretisationLineEdit")
+
         self.gridLayout.addWidget(self.discretisationLineEdit, 1, 1, 1, 1)
+
+
         self.verticalLayout_2.addWidget(self.groupBox)
-        self.buttonBox = QtGui.QDialogButtonBox(ConfigureDialog)
-        self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
-        self.buttonBox.setStandardButtons(QtGui.QDialogButtonBox.Cancel|QtGui.QDialogButtonBox.Ok)
-        self.buttonBox.setObjectName("buttonBox")
+
+        self.buttonBox = QDialogButtonBox(ConfigureDialog)
+        self.buttonBox.setObjectName(u"buttonBox")
+        self.buttonBox.setOrientation(Qt.Horizontal)
+        self.buttonBox.setStandardButtons(QDialogButtonBox.Cancel|QDialogButtonBox.Ok)
+
         self.verticalLayout_2.addWidget(self.buttonBox)
+
+#if QT_CONFIG(shortcut)
         self.identifierLabel.setBuddy(self.identifierLineEdit)
+#endif // QT_CONFIG(shortcut)
 
         self.retranslateUi(ConfigureDialog)
-        QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL("accepted()"), ConfigureDialog.accept)
-        QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL("rejected()"), ConfigureDialog.reject)
-        QtCore.QMetaObject.connectSlotsByName(ConfigureDialog)
+        self.buttonBox.accepted.connect(ConfigureDialog.accept)
+        self.buttonBox.rejected.connect(ConfigureDialog.reject)
+
+        QMetaObject.connectSlotsByName(ConfigureDialog)
+    # setupUi
 
     def retranslateUi(self, ConfigureDialog):
-        ConfigureDialog.setWindowTitle(QtGui.QApplication.translate("ConfigureDialog", "Configure - Mayavi Model Viewer", None, QtGui.QApplication.UnicodeUTF8))
-        self.renderArgsLineEdit.setText(QtGui.QApplication.translate("ConfigureDialog", "{\'color\':\'bone\'}", None, QtGui.QApplication.UnicodeUTF8))
-        self.renderArgsLabel.setText(QtGui.QApplication.translate("ConfigureDialog", "Render Args:", None, QtGui.QApplication.UnicodeUTF8))
-        self.discretisationLabel.setText(QtGui.QApplication.translate("ConfigureDialog", "Discretisation:", None, QtGui.QApplication.UnicodeUTF8))
-        self.displayNodeLabel.setText(QtGui.QApplication.translate("ConfigureDialog", "Display Nodes:", None, QtGui.QApplication.UnicodeUTF8))
-        self.identifierLabel.setText(QtGui.QApplication.translate("ConfigureDialog", "Identifier:", None, QtGui.QApplication.UnicodeUTF8))
-        self.discretisationLineEdit.setText(QtGui.QApplication.translate("ConfigureDialog", "5x5", None, QtGui.QApplication.UnicodeUTF8))
+        ConfigureDialog.setWindowTitle(QCoreApplication.translate("ConfigureDialog", u"Configure - Mayavi Model Viewer", None))
+        self.groupBox.setTitle("")
+        self.renderArgsLineEdit.setText(QCoreApplication.translate("ConfigureDialog", u"{'color':'bone'}", None))
+        self.renderArgsLabel.setText(QCoreApplication.translate("ConfigureDialog", u"Render Args:", None))
+#if QT_CONFIG(tooltip)
+        self.discretisationLabel.setToolTip("")
+#endif // QT_CONFIG(tooltip)
+        self.discretisationLabel.setText(QCoreApplication.translate("ConfigureDialog", u"Discretisation:", None))
+        self.displayNodeLabel.setText(QCoreApplication.translate("ConfigureDialog", u"Display Nodes:", None))
+        self.identifierLabel.setText(QCoreApplication.translate("ConfigureDialog", u"Identifier:", None))
+        self.displayNodesCheckBox.setText("")
+        self.discretisationLineEdit.setText(QCoreApplication.translate("ConfigureDialog", u"5x5", None))
+    # retranslateUi
 

@@ -19,10 +19,10 @@ This file is part of MAP Client. (http://launchpad.net/mapclient)
 '''
 import os
 import json
-os.environ['ETS_TOOLKIT'] = 'qt4'
+
+os.environ['ETS_TOOLKIT'] = 'qt5'
 import random
 import string
-from PySide import QtGui
 
 from mapclient.mountpoints.workflowstep import WorkflowStepMountPoint
 
@@ -38,11 +38,12 @@ from gias2.mappluginutils.mayaviviewer.mayaviviewergiasscan import MayaviViewerG
 from gias2.mappluginutils.mayaviviewer.mayaviviewerdatapoints import MayaviViewerDataPoints
 from gias2.mappluginutils.mayaviviewer import mayaviviewerfieldworkmeasurements as MVFM
 
+
 class MayaviViewerStep(WorkflowStepMountPoint):
     '''
     Step for displaying 3D objects using mayavi.
     '''
-    
+
     def __init__(self, location):
         super(MayaviViewerStep, self).__init__('Mayavi 3D Model Viewer', location)
         self._category = 'Visualisation'
@@ -75,19 +76,19 @@ class MayaviViewerStep(WorkflowStepMountPoint):
         self.objectContainer = MayaviViewerObjectsContainer()
 
     def configure(self):
-        d = ConfigureDialog(self._state)
+        d = ConfigureDialog(self._main_window)
         d.setModal(True)
         if d.exec_():
             self._state = d.getState()
             self.serialize()
-            
+
         self._configured = d.validate()
         if self._configured and self._configuredObserver:
             self._configuredObserver()
-    
+
     def getIdentifier(self):
         return self._state._identifier
-     
+
     def setIdentifier(self, identifier):
         self._state._identifier = identifier
 
@@ -96,11 +97,11 @@ class MayaviViewerStep(WorkflowStepMountPoint):
         Add code to serialize this step to disk. Returns a json string for
         mapclient to serialise.
         '''
-        config = {'identifier':self._state._identifier,
-                  'discretisation':self._state._discretisation,
-                  'displaynodes':self._state._displayNodes,
-                  'renderargs':self._state._renderArgs,
-                    }
+        config = {'identifier': self._state._identifier,
+                  'discretisation': self._state._discretisation,
+                  'displaynodes': self._state._displayNodes,
+                  'renderargs': self._state._renderArgs,
+                  }
         return json.dumps(config, default=lambda o: o.__dict__, sort_keys=True, indent=4)
 
     def deserialize(self, string):
@@ -115,14 +116,14 @@ class MayaviViewerStep(WorkflowStepMountPoint):
         self._state._displayNodes = config['displaynodes']
         self._state._renderArgs = config['renderargs']
 
-        if self._state._displayNodes=='True':
+        if self._state._displayNodes == 'True':
             self._state._displayNodes = True
-        elif self._state._displayNodes=='False':
+        elif self._state._displayNodes == 'False':
             self._state._displayNodes = False
 
-        d = ConfigureDialog(self._state)
+        d = ConfigureDialog()
         self._configured = d.validate()
- 
+
     def setPortData(self, index, dataIn):
         if not isinstance(dataIn, dict):
             raise TypeError('mayaviviewerstep expects a dictionary as input')
@@ -140,16 +141,16 @@ class MayaviViewerStep(WorkflowStepMountPoint):
 
     def _addFieldworkModels(self, D):
         for name, model in list(D.items()):
-            name = name+'#'+'FWModel'
+            name = name + '#' + 'FWModel'
             renderArgs = eval(self._state._renderArgs)
-            obj = MayaviViewerFieldworkModel(name, model, [8,8], evaluator=None,
+            obj = MayaviViewerFieldworkModel(name, model, [8, 8], evaluator=None,
                                              renderArgs=renderArgs, fields=None,
                                              fieldName=None, PC=None)
             self.objectContainer.addObject(name, obj)
 
     def _addFieldworkMeasurements(self, D):
         for name, M in list(D.items()):
-            name = name+'#'+'FWMeasure'
+            name = name + '#' + 'FWMeasure'
             renderArgs = eval(self._state._renderArgs)
 
             # a bit hacky yea
@@ -157,22 +158,21 @@ class MayaviViewerStep(WorkflowStepMountPoint):
                 print('ADDING MEASUREMENT', name)
                 obj = MVFM.MayaviViewerFemurMeasurements(name, M)
                 self.objectContainer.addObject(name, obj)
-        
+
     def _addPointClouds(self, D):
         for name, P in list(D.items()):
-            name = name+'#'+'DC'
+            name = name + '#' + 'DC'
             renderArgs = eval(self._state._renderArgs)
-            obj = MayaviViewerDataPoints(name, P, renderArgs={'mode':'point', 'color':(0,1,0)})
+            obj = MayaviViewerDataPoints(name, P, renderArgs={'mode': 'point', 'color': (0, 1, 0)})
             self.objectContainer.addObject(name, obj)
- 
+
     def _addImages(self, D):
         for name, S in list(D.items()):
-            name = name+'#'+'IM'
+            name = name + '#' + 'IM'
             renderArgs = eval(self._state._renderArgs)
             obj = MayaviViewerGiasScan(name, S, renderArgs=renderArgs)
             self.objectContainer.addObject(name, obj)
 
-        
     def _addSimplemeshes(self, D):
         pass
         # for name, S in D.items():
@@ -180,8 +180,10 @@ class MayaviViewerStep(WorkflowStepMountPoint):
         #     obj = MayaviViewerSimpleMesh(name, model, renderArgs=renderArgs)
         #     self.objectContainer.addObject(name, obj)
 
+
 def getConfigFilename(identifier):
     return identifier + '.conf'
 
+
 def generateIdentifier(char_set=string.ascii_uppercase + string.digits):
-    return ''.join(random.sample(char_set*6,6))
+    return ''.join(random.sample(char_set * 6, 6))
